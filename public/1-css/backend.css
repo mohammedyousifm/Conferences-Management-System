@@ -1,0 +1,102 @@
+/* ---------------------------------------------
+    This Style for Backend 
+    1- sidebar
+    2- top-navbar
+    3-
+    4-
+    5-
+---------------------------------------------  */
+
+body {
+    background-color: #ececec;
+}
+
+/* ---------------------------------------------
+    1- sidebar
+---------------------------------------------  */
+.sidebar {
+    width: 230px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    background-color: #343a40;
+    color: white;
+    transition: left 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar .nav-link {
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    background: var(--bg-color);
+}
+
+.sidebar .nav-item i {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.sidebar.open {
+    left: 0; /* Show sidebar */
+}
+
+/* ---------------------------------------------
+    2- top-navbar
+---------------------------------------------  */
+#top-navbar {
+    margin: -15px;
+}
+
+.main-content {
+    margin-left: 0;
+    padding: 0 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.sidebar-open {
+    margin-left: 250px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.paper-table.active {
+    display: block;
+}
+
+.paper-details {
+    display: none;
+}
+
+.paper-details.active {
+    display: block;
+}
+
+.navbar-custom {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.theme-toggle {
+    cursor: pointer;
+}
+
+@media (min-width: 1100px) {
+    .sidebar {
+        left: 0; /* Show sidebar by default on larger screens */
+    }
+    .main-content {
+        margin-left: 225px; /* Adjust main content for sidebar */
+    }
+}

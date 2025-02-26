@@ -1,0 +1,92 @@
+/* ---------------------------------------------
+    Style Frontend - Part
+    This Style  of Fron-tend Part
+    1- navbar
+    2-
+    3-
+    4-
+    5- Login & Register
+---------------------------------------------  */
+
+/* ---------------------------------------------
+    1- navbar
+---------------------------------------------  */
+.navbar-nav {
+    margin-left: 5rem;
+    text-align: right !important;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.75rem 1rem;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 5px;
+}
+
+.navbar .btn {
+    padding: 0.75rem 1rem !important;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.vertical-line {
+    width: 1px;
+    height: 80px;
+    background-color: #686868;
+    display: inline-block;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    transition: width 0.3s ease, opacity 0.3s ease;
+    width: 0;
+    opacity: 0;
+}
+
+.search-input.open {
+    width: 200px;
+    opacity: 1;
+    padding: 0.375rem 0.75rem;
+    margin-right: 1rem;
+}
+
+/* Prevent Alpine.js flicker */
+[x-cloak] {
+    display: none !important;
+}
+/* ---------------------------------------------
+    2-
+---------------------------------------------  */
+
+/* ---------------------------------------------
+    3-
+---------------------------------------------  */
+
+/* ---------------------------------------------
+    4-
+---------------------------------------------  */
+
+/* ---------------------------------------------
+    5- Login & Register
+---------------------------------------------  */
+.login_register {
+    width: 50%;
+    margin: 0 auto;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .login_register {
+        width: 100%;
+    }
+}

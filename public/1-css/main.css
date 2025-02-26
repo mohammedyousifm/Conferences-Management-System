@@ -1,0 +1,59 @@
+/* ---------------------------------------------
+    This styel for the all application
+    1-
+    2-
+    3-
+    4-
+    5-Tables
+---------------------------------------------  */
+
+:root {
+    --bg-color: #f7941d;
+    --text-black: rgb(21, 21, 21);
+    --text-color: rgb(240, 240, 240);
+}
+
+/* background color  : #f7941d;*/
+.bg {
+    background-color: var(--bg-color) !important;
+    border: none !important;
+}
+/* -text-black */
+.text-black {
+    color: var(--text-black) !important;
+    font-weight: bold;
+}
+
+/* Text color :  rgb(240, 240, 240);*/
+.text {
+    color: var(--text-color) !important;
+}
+
+/* Text color :  #f7941d;*/
+.text-bg {
+    color: var(--bg-color) !important;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+/* ---------------------------------------------
+    5- Tables
+---------------------------------------------  */
+table thead {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+}
+
+table tbody {
+    border: 1px solid rgb(212, 212, 212);
+    text-align: center;
+}
