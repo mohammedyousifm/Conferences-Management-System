@@ -9,6 +9,9 @@ use App\Models\Paper;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Events\NewActivity;
+use App\Models\Activity;
+use App\Events\NewPaper;
 
 class ConferenceController extends Controller
 {
@@ -28,9 +31,16 @@ class ConferenceController extends Controller
         return view('1-frontend.conference-details', compact('Conference'));
     }
 
+    /**
+     * Store the paper .
+     *
+     * @param Request $request The incoming HTTP request.
+     * @event // Fire event to new paper
+     * @param Paper $id The paper to Id  are being assigned.
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
-
 
         try {
 
@@ -88,8 +98,22 @@ class ConferenceController extends Controller
                 $paper->paper_file = $filePath; // Save file path
             }
 
-
             $paper->save();
+
+
+            // ✅ Insert Recent Activity
+            Activity::create([
+                'paper_code' => $paperId,
+                'user_id'    => auth::id(),
+                'activity_type' => 'New Paper',
+                'description' => 'submitted Paper ID'
+            ]);
+
+            // ✅ Get the controller ID of the conference
+            $controllerId = Conference::where('id', $paper->conference_id)->value('controller_id');
+
+            // Fire event to new paper
+            event(new NewPaper($paperId));
 
             // ✅ Redirect Back with Success Message
             flash()

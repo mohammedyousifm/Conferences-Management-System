@@ -11,13 +11,25 @@ use App\Http\Controllers\Dashboard\Reviewer\DashboardController as ReviewerCont;
 use App\Http\Controllers\Dashboard\Controller\ReportsController;
 use App\Http\Controllers\Dashboard\Controller\AddreviewerController;
 use App\Http\Controllers\PaperController;
-
-
-
+use App\Events\NewActivity;
+use App\Events\ReviewerComment;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/test-event', function () {
+    $user = 'Samir 😎';
+    $message = 'This is a test event!';
+
+    // ✅ Fire Event to Notify Reviewer
+    event(new ReviewerComment(Auth::user()->name,  678787));
+
+    Log::info("NewActivity event dispatched by $user with message: $message");
+
+    return response()->json(['message' => 'Event dispatched', 'user' => $user, 'content' => $message]);
+});
 
 
 /* ---------------------------------------------
@@ -50,7 +62,7 @@ Route::middleware(['auth', 'role:controller'])->group(function () {
     Route::get('/dashboard/controller', [ControllerCont::class, 'index'])->name('controller.dashboard');
     Route::get('/controller/papers', [ControllerCont::class, 'papers_index'])->name('papers.controller');
     Route::post('/controller/papers/{paper}/assign', [ControllerCont::class, 'assignReviewers'])->name('assign.reviewers');
-    Route::post('/controller/update-status/{id}', [PaperController::class, 'updateStatus'])->name('papers.updateStatus');
+    Route::post('/controller/update-status/{id}', [ControllerCont::class, 'updateStatus'])->name('papers.updateStatus');
     Route::get('/controller/papers/{id}', [ControllerCont::class, 'review_paper'])->name('review_papers.controller');
     // add conference
     Route::get('/controller/conference', [ConferenceCont::class, 'conference'])->name('conference.controller');
@@ -88,11 +100,10 @@ Route::middleware(['auth', 'role:reviewer'])->group(function () {
     This controller control the Flow of Frontend
 ---------------------------------------------  */
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profilee', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard', [ProfileController::class, 'edit'])->name('profile.edit');
 
 require __DIR__ . '/auth.php';

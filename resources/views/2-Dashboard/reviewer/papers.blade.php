@@ -2,77 +2,68 @@
 @section('title' , 'Reviewe  Paper')
 @section('content')
 
-<div class="heding mt-2">
-    <h3 class="card-title fw-bold text-dark mb-3">Papers</h3>
-</div>
 
-                  <!-- Paper Table -->
-                  <div class="paper-table">
-                    <table class="table table-bordered mt-4">
+     <section id="Reviewe-Paper">
+        <div class="card shadow-sm p-4 mb-4 bg-white rounded">
+            <div  class=" d-flex justify-content-between mt-2">
+              <h2 class="text-black">Papers</h2>
+             </div>
+             <p class="lead text-muted">Manage the Papers, track the papers, and stay updated with the latest notifications.</p>
+         </div>
 
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Conference</th>
-                          <th>Title</th>
-                          <th>Paper code</th>
-                          <th>Version</th>
-                          <th>Status</th>
-                          <th>Submission date</th>
-                          <th>Paper</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+            <!-- Paper Table -->
+            <div class="paper-table">
+              <table class="table table-bordered mt-4">
 
-                            @foreach ($papers as $paper)
-                             <tr>
-                                <td>{{ $paper->id }}</td>
-                                <td>{{ $paper->paper->conference->title }}</td>
-                                <td>{{ $paper->paper->paper_title }}</td>
-                                <td>{{ $paper->paper->paper_code }}</td>
-                                <td>v- {{ $paper->paper->version }}</td>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Conference</th>
+                    <th>Title</th>
+                    <th>Paper code</th>
+                    <th>Version</th>
+                    <th>Status</th>
+                    <th>Submission date</th>
+                    <th>Paper</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
 
-                                <td>
-                                    <form action="{{ route('papers.updateStatus', $paper->id) }}" method="POST">
-                                        @csrf
-                                        @method('POST')
+                  @if ($papers->isNotEmpty())
+                     @foreach ($papers as $paper)
+                     <tr>
+                        <td class="p-3">{{ $paper->id }}</td>
+                        <td class="p-3">{{ $paper->paper->conference->title }}</td>
+                        <td class="p-3">{{ $paper->paper->paper_title }}</td>
+                        <td class="p-3">{{ $paper->paper->paper_code }}</td>
+                        <td class="p-3">v- {{ $paper->paper->version }}</td>
+                        <td class="p-3">
+                            <span class="text {{ $paper->status === 'Done' ? 'status-done' : 'status-in' }}">
+                                {{ $paper->status }}
+                            </span>
 
-                                        <select name="status" class="form-select form-select-sm" id="status-select-{{ $paper->id }}"
-                                                onchange="handleStatusChange({{ $paper->id }})"
-                                                {{ $paper->status == 'Completed' ? 'disabled' : '' }}>
+                         </td>
+                        <td class="p-3">{{ $paper->paper->created_at->format('Y M') }}</td>
+                        <td class="p-3">
+                            <a href="{{ asset($paper->paper->paper_file) }}" class="btn bg text btn-sm" download target="_blank">Downlowd</a>
+                        </td>
+                        <td class="p-3">
+                            <a class="btn  bg text btn-sm" href="{{ route('review_papers.reviewer' , $paper->paper->id) }}">View</a>
+                        </td>
+                      </tr>
+                     @endforeach
+                  @else
+                     <tr>
+                      <td colspan="10" class="p-5">No papers found.</td>
+                     </tr>
+                  @endif
 
-                                            <!-- Show current status as the first option -->
-                                            <option value="{{ $paper->status }}" selected>{{ ucfirst($paper->status) }}</option>
 
-                                            <!-- Display only the other statuses -->
-                                            @foreach(['Received' , 'Under_review', 'Completed'] as $status)
-                                                @if($status !== $paper->status)
-                                                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-
-                                        <!-- Hidden submit button -->
-                                        <button type="submit" id="submit-btn-{{ $paper->id }}" class="btn btn-success btn-sm mt-2" style="display: none;">Submit</button>
-                                    </form>
-                                </td>
-
-                                <td>{{ $paper->created_at->format('Y M') }}</td>
-                                <td>
-                                    <a href="{{ asset($paper->paper->paper_file) }}" class="btn bg text btn-sm" download target="_blank">Downlowd</a>
-                                </td>
-                                <td>
-                                    <a class="btn  bg text btn-sm" href="{{ route('review_papers.reviewer' , $paper->paper->id) }}">View</a>
-                                </td>
-                              </tr>
-                            @endforeach
-
-                      </tbody>
-                    </table>
-                  </div>
-
-        {{-- end Main Content --}}
+                </tbody>
+              </table>
+            </div>
+     </section>
     </div>
-
 @endsection
+

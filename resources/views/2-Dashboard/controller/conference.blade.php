@@ -1,5 +1,5 @@
 @extends('4-layout.backend');
-@section('title' , 'Controller Dashboard')
+@section('title' , 'Controller Conferences')
 @section('content')
 
 
@@ -10,7 +10,7 @@
           <h2 class="text-black">Conferences</h2>
           <button class="btn bg btn-primary" @click="showModal = true">Add Conference</button>
         </div>
-        <p class="lead text-muted">Manage your submissions, track your papers, and stay updated with the latest notifications.</p>
+        <p class="lead text-muted">Manage the  Conferences, track the Conferences, and stay updated with the latest notifications.</p>
     </div>
 
     <div class="heding d-flex justify-content-between mt-2">
@@ -113,30 +113,38 @@
         </thead>
         <tbody>
 
-              @foreach ($Conferences as $Conference)
-               <tr>
-                  <td>{{ $Conference->id }}</td>
-                  {{-- <td>{{ $Conference->author->name }}</td> --}}
-                  <td>{{ $Conference->title }}</td>
-                  <td x-data="{open: false}">
-                    <span x-on:click="open = !open" class="description">
-                        {{ Str::limit($Conference->description , 30 , '....') }}
-                    </span>
-                    <span x-show="open">
-                        {{ $Conference->description }}
-                    </span>
+            @if ($Conferences->isNotEmpty())
+               @foreach ($Conferences as $Conference)
+                  <tr>
+                     <td class="p-3">{{ $Conference->id }}</td>
+                     {{-- <td>{{ $Conference->author->name }}</td> --}}
+                     <td class="p-3">{{ $Conference->title }}</td>
+                     <td x-data="{open: false}" class="p-3">
+                       <span x-on:click="open = !open" class="description">
+                           {{ Str::limit($Conference->description , 30 , '....') }}
+                       </span>
+                       <span x-show="open">
+                           {{ $Conference->description }}
+                       </span>
 
-                  </td>
-                  <td class="text-center"> <span class="bg status text text-center">{{ $Conference->status }}</span></td>
-                  <td>{{ $Conference->start_date }}</td>
-                  <td>{{ $Conference->end_date }}</td>
-                  <td>{{ $Conference->registration_deadline }}</td>
-                  <td>{{ $Conference->location }}</td>
-                  <td class="text-center">
-                   <a class="btn bg text   btn-info btn-sm" href="{{ route('review_papers.controller' , $Conference->id) }}">View</a>
-                 </td>
-                </tr>
+                     </td>
+                     <td class="text-center p-3"> <span class="bg status text text-center">{{ $Conference->status }}</span></td>
+                     <td class="p-3">{{ $Conference->start_date }}</td>
+                     <td class="p-3">{{ $Conference->end_date }}</td>
+                     <td class="p-3">{{ $Conference->registration_deadline }}</td>
+                     <td class="p-3">{{ $Conference->location }}</td>
+                     <td class="text-center p-3">
+                      <a class="btn bg text   btn-info btn-sm" href="{{ route('review_papers.controller' , $Conference->id) }}">View</a>
+                    </td>
+                   </tr>
               @endforeach
+            @else
+            <tr>
+                <td colspan="10" class="p-5">No Conference found.</td>
+               </tr>
+            @endif
+
+
 
         </tbody>
       </table>
@@ -144,9 +152,7 @@
 
 </section>
 
-
 </div>
-
 
 
 

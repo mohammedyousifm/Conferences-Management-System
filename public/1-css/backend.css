@@ -1,10 +1,10 @@
 /* ---------------------------------------------
-    This Style for Backend 
+    This Style for Backend
     1- sidebar
     2- top-navbar
     3-
-    4-
-    5-
+    4- Controller Dashboard
+    5- Reviewe Paper
 ---------------------------------------------  */
 
 body {
@@ -99,4 +99,52 @@ body {
     .main-content {
         margin-left: 225px; /* Adjust main content for sidebar */
     }
+}
+
+/* ---------------------------------------------
+ 4- Controller_Dashboard
+---------------------------------------------  */
+
+#Controller_Dashboard .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+#Controller_Dashboard .card-header {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+}
+
+#Controller_Dashboard .status-done {
+    color: #fff;
+    background-color: #28a745;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+#Controller_Dashboard .status-review {
+    color: #fff;
+    background-color: #ffc107;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* ---------------------------------------------
+ 5- Reviewe Paper
+---------------------------------------------  */
+#Reviewe-Paper .status-done {
+    background-color: #28a745;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+#Reviewe-Paper .status-in {
+    background-color: #0070f9;
+    padding: 5px 12px;
+    border-radius: 20px;
 }

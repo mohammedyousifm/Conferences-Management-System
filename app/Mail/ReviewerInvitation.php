@@ -21,7 +21,7 @@ class ReviewerInvitation extends Mailable
     public function build()
     {
         return $this->subject('Invitation to Register as a Reviewer')
-            ->view('emails.reviewer-invitation')
+            ->view('3-emails.reviewer-invitation')
             ->with(['registrationLink' => $this->registrationLink]);
     }
 }

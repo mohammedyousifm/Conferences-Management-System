@@ -27,20 +27,22 @@
           </thead>
           <tbody>
 
-            <tr>
-                <td>1</td>
-                <td>Title 1</td>
-                <td>confrenss</td>
-                <td>#235245346</td>
-                <td>v- 1</td>
+            @if ($Papers->isNotEmpty())
+              @foreach ($Papers as $Paper)
+              <tr>
+                <td class="badge bg-dark bg-opacity-10  px-3 py-2 rounded-pill text-dark">{{ $Paper->id }}</td>
+                <td>{{ $Paper->paper_title }}</td>
+                <td>{{ $Paper->conference->title }}</td>
+                <td>{{ $Paper->paper_code }}</td>
+                <td>{{ $Paper->id }}</td>
+                <td>v- {{ $Paper->id }}</td>
                 <td>
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">In Progress</span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">{{ $Paper->status }}</span>
                 </td>
-                <td>2004</td>
+                <td>{{ $Paper->created_at }}</td>
+
                 <td>
-                  <a href="" class="btn bg text  btn-sm" download target="_blank">Downlowd</a>
-                </td>
-                <td>
+                    <a href="" class="btn bg text mb-2  btn-sm" download target="_blank">Downlowd</a>
                   <div x-data="{ open: false }" class="position-relative">
                       <!-- Dropdown Button -->
                       <button @click="open = !open" class="btn bg text btn-info btn-sm">
@@ -63,95 +65,13 @@
                       </div>
                   </div>
               </td>
-
             </tr>
+              @endforeach
 
-            <tr>
-                <td>1</td>
-                <td>confrenss</td>
-                <td>Title 1</td>
-                <td>#235245346</td>
-                <td>v- 1</td>
-                <td>
-                    <span class="badge bg-dark bg-opacity-10  px-3 py-2 rounded-pill text-dark">Under Review</span>
-                </td>
-                <td>2004</td>
-                <td>
-                  <a href="" class="btn bg text  btn-sm" download target="_blank">Downlowd</a>
-                </td>
-                <td>
-                  <div x-data="{ open: false }" class="position-relative">
-                      <!-- Dropdown Button -->
-                      <button @click="open = !open" class="btn bg text btn-info btn-sm">
-                          Actions ▼
-                      </button>
+            @else
 
-                      <!-- Dropdown Menu -->
-                      <div x-show="open" @click.outside="open = false" class="position-absolute bg-white shadow rounded p-2" style="min-width: 110px; z-index: 10;">
-                          <a  class="dropdown-item text-primary">
-                              📄 View
-                          </a>
-                          <hr>
-                          <a  class="dropdown-item text-success">
-                              📝 Report
-                          </a>
-                          <hr>
-                          <form action="" method="POST" class="m-0">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="dropdown-item text-danger w-100 text-left">
-                                  ❌ Delete
-                              </button>
-                          </form>
-                      </div>
-                  </div>
-              </td>
+            @endif
 
-            </tr>
-
-
-            <tr>
-                <td>1</td>
-                <td>confrenss</td>
-                <td>Title 1</td>
-                <td>#235245346</td>
-                <td>v- 1</td>
-                <td>
-                    <span class="badge p-2 bg-success bg-opacity-10  px-3 py-2 rounded-pill text-success">Done</span>
-                </td>
-                <td>2004</td>
-                <td>
-                  <a href="" class="btn bg text  btn-sm" download target="_blank">Downlowd</a>
-                </td>
-                <td>
-                  <div x-data="{ open: false }" class="position-relative">
-                      <!-- Dropdown Button -->
-                      <button @click="open = !open" class="btn bg text btn-info btn-sm">
-                          Actions ▼
-                      </button>
-
-                      <!-- Dropdown Menu -->
-                      <div x-show="open" @click.outside="open = false" class="position-absolute bg-white shadow rounded p-2" style="min-width: 110px; z-index: 10;">
-                          <a  class="dropdown-item text-primary">
-                              📄 View
-                          </a>
-                          <hr>
-                          <a  class="dropdown-item text-success">
-                              📝 Report
-                          </a>
-                          <hr>
-                          <form action="" method="POST" class="m-0">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="dropdown-item text-danger w-100 text-left">
-                                  ❌ Delete
-                              </button>
-                          </form>
-                      </div>
-                  </div>
-              </td>
-
-            </tr>
           </tbody>
         </table>
       </div>

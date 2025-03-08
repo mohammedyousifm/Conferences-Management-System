@@ -17,16 +17,27 @@
    <link rel="stylesheet" href="{{ asset('1-css/main.css') }}">
    <link rel="stylesheet" href="{{ asset('1-css/backend.css') }}">
 
-   {{-- ajax --}}
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+     {{-- ajax --}}
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <!-- FontAwesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+      {{-- pusher --}}
+      <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
  </head>
  <body>
 
     {{-- php code | Get authenticated user role and return the respective route --}}
     @php
-    //
     function getUserRoute(string $type) {
         $role = auth()->user()->user_role ?? 'guest';
         $routes = [
@@ -46,7 +57,7 @@
 
         return route($routes[$type][$role] ?? $routes[$type]['default']);
     }
-@endphp
+   @endphp
 
 
    <div x-data="{ sidebarOpen: false, darkMode: false }">
@@ -126,7 +137,7 @@
 
             @endif
             <li class="nav-item mb-1">
-                <a class="nav-link text-white d-flex align-items-center" href="#">
+                <a class="nav-link text-white d-flex align-items-center {{ request()->routeIs('profile.edit')  ? 'active' : '' }}" href="{{ route('profile.edit') }}">
 
                     <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
                         <i class="fas fa-user me-2"></i>
@@ -136,7 +147,7 @@
                 </a>
             </li>
             <li class="nav-item mb-1">
-                <a class="nav-link text-white d-flex align-items-center" href="#">
+                <a class="nav-link text-white d-flex  align-items-center" href="#">
 
                     <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
                         <i class="fas fa-cog me-2"></i>
@@ -180,7 +191,7 @@
                 </form>
 
               </div>
-        </nav>
+     </nav>
 
       @yield('content')
 

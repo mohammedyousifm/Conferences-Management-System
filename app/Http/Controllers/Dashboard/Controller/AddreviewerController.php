@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\controller;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Invitation;
 use Carbon\Carbon;
@@ -18,32 +19,69 @@ class AddreviewerController extends Controller
         return view('2-dashboard.controller.add-reviewer');
     }
 
+    /**
+     * Send an invitation email with a unique registration link.
+     *
+     * This function generates a secure token, stores the invitation details in the database,
+     * and sends an email with the invitation link to the specified recipient.
+     * The link expires in 24 hours.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function sendInvitation(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
+        try {
+            // ✅ Validate request input
+            $request->validate([
+                'email' => 'required|email',
+            ]);
 
-        // Generate a unique token
-        $token = Str::random(40);
+            $email = $request->email;
 
-        // Generate a secure invitation link
-        $registrationLink = url("/login?token=$token");
+            // ✅ Check for existing invitations that haven't expired yet
+            $existingInvitation = Invitation::where('email', $email)
+                ->where('expires_at', '>', now()) // Active invitation exists
+                ->where('used', false) // Ensure it hasn't been used
+                ->first();
 
-        dd($registrationLink);
+            if ($existingInvitation) {
+                flash()->options([
+                    'timeout'  => 5000,
+                    'position' => 'top-center',
+                ])->warning('An active invitation already exists for this email.');
+                return back();
+            }
 
-        // Store invitation data in database
-        $invitation = Invitation::create([
-            'email' => $request->email,
-            'token' => $token,
-            'expires_at' => Carbon::now()->addHours(24) // Link expires in 24 hours
-        ]);
+            // ✅ Generate a unique and secure token
+            $token = Str::random(40);
+            $registrationLink = url("/register?token={$token}");
+
+            // ✅ Store new invitation securely in the database
+            Invitation::create([
+                'email'         => $email,
+                'controller_id' => auth()->id(),
+                'token'         => $token,
+                'expires_at'    => now()->addDay(), // Valid for 24 hours
+            ]);
+
+            // ✅ Send invitation email asynchronously
+            Mail::to($email)->queue(new \App\Mail\ReviewerInvitation($registrationLink));
+
+            // ✅ Display success message
+            flash()->options([
+                'timeout'  => 5000,
+                'position' => 'top-center',
+            ])->success('Invitation sent successfully!');
+        } catch (\Exception $e) {
+            // ✅ Handle errors and provide feedback
+            flash()->options([
+                'timeout'  => 5000,
+                'position' => 'top-center',
+            ])->error('Failed to send invitation: ' . $e->getMessage());
+        }
 
 
-
-        // Send email with the invitation link
-        Mail::to($request->email)->send(new \App\Mail\ReviewerInvitation($registrationLink));
-
-        return response()->json(['message' => 'Invitation sent successfully!']);
+        return back();
     }
 }

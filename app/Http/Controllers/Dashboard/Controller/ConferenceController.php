@@ -13,7 +13,10 @@ class ConferenceController extends Controller
 {
     public function conference()
     {
-        $Conferences = Conference::all();
+        // ✅ Get the logged-in controller ID
+        $controllerId = Auth::id();
+
+        $Conferences = Conference::where('controller_id', $controllerId)->get();
         return view('2-dashboard.controller.conference', compact('Conferences'));
     }
 

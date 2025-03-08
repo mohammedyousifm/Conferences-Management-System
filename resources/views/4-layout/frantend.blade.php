@@ -30,9 +30,23 @@
    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 
+  <!-- Toastr CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <!-- FontAwesome for Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+
+
     {{-- style --}}
     <link rel="stylesheet" href="{{ asset('1-css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('1-css/frantend.css') }}">
+
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 </head>
 
 
@@ -88,6 +102,9 @@
     <div id="gotoTop" class="icon-angle-up"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 </body>
 </html>
 

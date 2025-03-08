@@ -5,6 +5,7 @@
     3-
     4-
     5-Tables
+    6-custom-toast
 ---------------------------------------------  */
 
 :root {
@@ -56,4 +57,33 @@ table thead {
 table tbody {
     border: 1px solid rgb(212, 212, 212);
     text-align: center;
+}
+
+/* ---------------------------------------------
+    6- custom-toast
+---------------------------------------------  */
+.custom-toast {
+    background-color: #f7941d !important;
+    color: white !important;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 999999 !important;
+}
+.custom-toast .toast-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.custom-toast .toast-message {
+    font-size: 14px;
+    line-height: 1.5;
+}
+.toast-info::before,
+.toast-success::before,
+.toast-warning::before,
+.toast-error::before {
+    display: none !important;
 }

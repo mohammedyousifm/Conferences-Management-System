@@ -62,5 +62,46 @@
         </div>
   </section>
 
+<!-- Notification Container -->
+<script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('4b4596e6d2b0e51c0c4f', {
+        cluster: 'ap2'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+channel.bind('my-event', function(data) {
+    console.log("Received data: ", data); // Debugging
+    if (data.user && data.message) {
+        showCustomToastrNotification(data.user, data.message);
+    }
+});
+
+
+    function showCustomToastrNotification(user, message) {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            timeOut: "10000",
+            extendedTimeOut: "10000",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
+
+        toastr.info(
+            `<div class="notification-content">
+                <i class="fas fa-user"></i> <strong>${user}</strong><br>
+                <i class="fas fa-comment" style="margin-left: 5px;"></i> ${message}
+            </div>`,
+            'New Message 💬',
+            { allowHtml: true }
+        );
+    }
+</script>
+
+
+
 @endsection
 

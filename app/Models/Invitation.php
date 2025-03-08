@@ -14,5 +14,6 @@ class Invitation extends Model
         'controller_id',
         'email',
         'token',
+        'used',
     ];
 }

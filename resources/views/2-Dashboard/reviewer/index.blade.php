@@ -2,66 +2,148 @@
 @section('title' , 'Reviewer Dashboard')
 @section('content')
         {{-- Heading --}}
-        <div class="d-flex mt-3">
-            <div class="border-0 shadow-lg p-3 rounded-4" style="background-color: #343a40;">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold text-light mb-3">Amin Role</h5>
 
-                    <div class="d-flex justify-content-center align-items-center" style="position: relative;">
-                        <div class="position-absolute top-0 start-50 translate-middle-x" style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff8a00, #e52e71); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0px 5px 15px rgba(255, 138, 0, 0.4);">
-                            <i class="fas fa-user-tie fa-2x text-white"></i>
+       {{-- Dashboard Cards --}}
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-4 p-1" style="background: #f8f9fa;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-black mb-1">New Papers</h6>
+                            <h4 class="fw-bold text-dark">{{--{{ $Submitted_papers }}  --}} 10</h4>
                         </div>
-                    </div>
-
-                    <div class="mt-5">
-                        <span class="badge text-dark fw-semibold fs-5 px-4 py-2" style="background: rgba(255, 255, 255, 0.9); border-radius: 10px;">
-                            {{ Auth::check() ? Auth::user()->user_role : 'Guest' }}
-                        </span>
+                        <div class="icon-box d-flex justify-content-center bg align-items-center"
+                            style="width: 50px; height: 50px; border-radius: 12px;">
+                            <i class="fas fa-file-upload text-white fs-4"></i>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-4 p-1" style="background: #f8f9fa;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-black mb-1">In process</h6>
+                            <h4 class="fw-bold text-dark">{{--{{ $Under_reviwe }}  --}} 10</h4>
+                        </div>
+                        <div class="icon-box d-flex justify-content-center bg align-items-center"
+                            style="width: 50px; height: 50px; border-radius: 12px;">
+                            <i class="fas fa-exclamation-circle text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-4 p-1" style="background: #f8f9fa;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-black mb-1">Accepted</h6>
+                            <h4 class="fw-bold text-dark">{{--{{ $Accepted_papers }}  --}} 10</h4>
+                        </div>
+                        <div class="icon-box d-flex justify-content-center bg align-items-center"
+                            style="width: 50px; height: 50px; border-radius: 12px;">
+                            <i class="fas fa-check-circle text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 rounded-4 p-1" style="background: #f8f9fa;">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted text-black mb-1"> total Papers</h6>
+                            <h4 class="fw-bold text-dark">{{--{{ $Rejected_papers }}  --}} 10</h4>
+                        </div>
+                        <div class="icon-box d-flex justify-content-center bg align-items-center"
+                            style="width: 50px; height: 50px; border-radius: 12px;">
+                            <i class="fas fa-times-circle  text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-       {{-- Dashboard Cards --}}
-       <div class="container mt-5" x-data="dashboard">
-         <div class="row">
-           <div class="col-md-3">
-             <div class="card text-white bg-primary mb-3" @click="showTable('new')">
-               <div class="card-body">
-                 <h5 class="card-title"><i class="fas fa-file-upload me-2"></i>New Allocated</h5>
-                 <p class="card-text">{{ $Allocated_papers }}</p>
-               </div>
-             </div>
-           </div>
-           <div class="col-md-3">
-             <div class="card text-white bg-success mb-3" @click="showTable('complete')">
-               <div class="card-body">
-                 <h5 class="card-title"><i class="fas fa-check-circle me-2"></i>Complete Papers</h5>
-                 <p class="card-text">10</p>
-               </div>
-             </div>
-           </div>
-           <div class="col-md-3">
-             <div class="card text-white bg-warning mb-3" @click="showTable('incomplete')">
-               <div class="card-body">
-                 <h5 class="card-title"><i class="fas fa-exclamation-circle me-2"></i>Incomplete Papers</h5>
-                 <p class="card-text">{{ $Under_reviwe }}</p>
-               </div>
-             </div>
-           </div>
-           <div class="col-md-3">
-             <div class="card text-white bg-danger mb-3" @click="showTable('rejected')">
-               <div class="card-body">
-                 <h5 class="card-title"><i class="fas fa-times-circle me-2"></i>Rejected Papers</h5>
-                 <p class="card-text">{{ $Rejected_papers }}</p>
-               </div>
-             </div>
-           </div>
-         </div>
-
-
-
-       </div>
      </div>
    </div>
+
+<!-- Notification Container -->
+<script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('4b4596e6d2b0e51c0c4f', {
+        cluster: 'ap2'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+        if (data.controller_name && data.reviewer_name && data.paper_code) {
+            showCustomToastrNotification(data.controller_name, data.reviewer_name, data.paper_code);
+        }
+    });
+
+    function showCustomToastrNotification(controller_name, reviewer_name, paper_code) {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: "toast-top-center",
+            timeOut: 100000,
+            extendedTimeOut: 100000,
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            toastClass: "custom-toast"
+        };
+
+        // Add custom styles for better UI
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .custom-toast {
+                background-color: #f7941d !important;
+                color: white !important;
+                border-radius: 10px;
+                padding: 15px;
+                font-size: 14px;
+                font-weight: bold;
+                box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+                z-index: 999999 !important;
+            }
+            .custom-toast .toast-title {
+                font-size: 16px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+            .custom-toast .toast-message {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+                .toast-info::before,
+                .toast-success::before,
+                .toast-warning::before,
+                .toast-error::before {
+                    display: none !important;
+}
+
+        `;
+        document.head.appendChild(style);
+
+        // Display Toastr notification
+        toastr.info(
+            `<div style="display: flex; align-items: center; gap: 12px;">
+                <div>
+                    <span>${controller_name} assigned a paper to you.</span><br>
+                    <small style="color: #eee;">Paper Code: <strong>${paper_code}</strong></small>
+                </div>
+            </div>`,
+            "📢New Paper Assignment", // Title
+            { escapeHtml: false }
+        );
+    }
+</script>
+
+
 @endsection
+
