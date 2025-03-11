@@ -24,10 +24,10 @@ class DashboardController extends Controller
 
 
         $papers = Paper::all();
-        $Rejected_papers = Paper::where('status',  'Rejected')->count();
-        $Accepted_papers = Paper::where('status',  'Accepted')->count();
-        $Submitted_papers = Paper::where('status',  'Submitted')->count();
-        $Under_reviwe = Paper::where('status',  'Under_reviwe')->count();
+        $all_papers_count = Paper::count();
+        $Rejected_papers_count = Paper::where('status',  'Rejected')->count();
+        $Approved_papers_count = Paper::where('status',  'Approved')->count();
+        $In_Process_papers_count = Paper::where('status',  'In Process')->count();
 
         $New_Paper = Paper::latest()->first();
 
@@ -37,7 +37,7 @@ class DashboardController extends Controller
 
 
 
-        return view('2-dashboard.controller.index', compact('papers', 'Rejected_papers', 'Accepted_papers', 'Under_reviwe', 'Submitted_papers', 'New_Paper', 'Recent_Activity', 'Paper_Comment_Done'));
+        return view('2-dashboard.controller.index', compact('all_papers_count', 'papers', 'Rejected_papers_count', 'Approved_papers_count', 'New_Paper', 'Recent_Activity', 'In_Process_papers_count', 'Paper_Comment_Done'));
     }
 
     /**
@@ -55,12 +55,17 @@ class DashboardController extends Controller
         // ✅ Retrieve papers where the conference is managed by the logged-in controller
         $papers = Paper::whereHas('conference', function ($query) use ($controllerId) {
             $query->where('controller_id', $controllerId);
-        })->get();
+        })->latest()->paginate(10);
+
+        $all_papers_count = Paper::count();
+        $Approved_papers_count = Paper::where('status',  'Approved')->count();
+        $Rejected_papers_count = Paper::where('status',  'Rejected')->count();
+        $In_Process_papers_count = Paper::where('status',  'In Process')->count();
 
         // ✅ Retrieve the users where the user_roles is reviewer
         $users = User::where('user_role', 'reviewer')->get();
 
-        return view('2-dashboard.controller.papers', compact('papers', 'users'));
+        return view('2-dashboard.controller.papers', compact('papers', 'users', 'Approved_papers_count', 'Rejected_papers_count', 'In_Process_papers_count', 'all_papers_count'));
     }
 
     /**

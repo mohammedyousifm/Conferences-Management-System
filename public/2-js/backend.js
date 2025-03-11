@@ -80,3 +80,66 @@ function handleStatusChange(paperId) {
 
        limitSelection(paperId);
    }
+
+  /*
+ - (3)  JavaScript function to Show/Hide Conferences filter The Conferences
+ -                  (Per Conferences Statues)
+ - The function is implemnt in File './2-Dashboard/controller/Conferences'
+*/
+function filterconferences(status) {
+    let rows = document.querySelectorAll(".conferences-row");
+    let matchFound = false;
+
+    rows.forEach(row => {
+        if (status === "all" || row.getAttribute("data-status") === status) {
+            row.style.display = "table-row";
+            setTimeout(() => row.classList.remove("hidden"), 50);
+            matchFound = true;
+        } else {
+            row.classList.add("hidden");
+            setTimeout(() => row.style.display = "none", 500); // Hides row after animation
+        }
+    });
+
+    // Show "No match found" if no rows are visible
+    let noMatchDiv = document.getElementById("no-match");
+    if (!matchFound) {
+        noMatchDiv.style.display = "block";
+        setTimeout(() => noMatchDiv.style.opacity = "1", 50);
+    } else {
+        noMatchDiv.style.opacity = "0";
+        setTimeout(() => noMatchDiv.style.display = "none", 500);
+    }
+}
+
+
+  /*
+ - (4)  JavaScript function to Show/Hide paper filter The paper
+ -                  (Per paper Statues)
+ - The function is implemnt in File './2-Dashboard/controller/paper'
+*/
+function filterPapers(status) {
+    let rows = document.querySelectorAll(".paper-row");
+    let matchFound = false;
+
+    rows.forEach(row => {
+        if (status === "all" || row.getAttribute("data-status") === status) {
+            row.style.display = "table-row";
+            setTimeout(() => row.classList.remove("hidden"), 50);
+            matchFound = true;
+        } else {
+            row.classList.add("hidden");
+            setTimeout(() => row.style.display = "none", 500); // Hides row after animation
+        }
+    });
+
+    // Show "No match found" if no rows are visible
+    let noMatchDiv = document.getElementById("no-match");
+    if (!matchFound) {
+        noMatchDiv.style.display = "block";
+        setTimeout(() => noMatchDiv.style.opacity = "1", 50);
+    } else {
+        noMatchDiv.style.opacity = "0";
+        setTimeout(() => noMatchDiv.style.display = "none", 500);
+    }
+}

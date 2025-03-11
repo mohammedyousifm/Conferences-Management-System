@@ -12,12 +12,16 @@
     --bg-color: #f7941d;
     --text-black: rgb(21, 21, 21);
     --text-color: rgb(240, 240, 240);
+    --bg-pr: #007bff;
 }
 
 /* background color  : #f7941d;*/
 .bg {
     background-color: var(--bg-color) !important;
     border: none !important;
+}
+.bg-pr {
+    background-color: var(--bg-pr) !important;
 }
 /* -text-black */
 .text-black {

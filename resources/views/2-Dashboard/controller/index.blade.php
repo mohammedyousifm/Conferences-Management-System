@@ -27,7 +27,7 @@
                                 <div class="card-body d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="text-muted text-black mb-1">In process</h6>
-                                        <h4 class="fw-bold text-dark">{{--{{ $Under_reviwe }}  --}} 10</h4>
+                                        <h4 class="fw-bold text-dark">{{ $In_Process_papers_count }}  </h4>
                                     </div>
                                     <div class="icon-box d-flex justify-content-center bg align-items-center"
                                         style="width: 50px; height: 50px; border-radius: 12px;">
@@ -41,8 +41,8 @@
                             <div class="card shadow-sm border-0 rounded-4 p-1" style="background: #f8f9fa;">
                                 <div class="card-body d-flex justify-content-between align-items-center">
                                     <div>
-                                        <h6 class="text-muted text-black mb-1">Accepted</h6>
-                                        <h4 class="fw-bold text-dark">{{--{{ $Accepted_papers }}  --}} 10</h4>
+                                        <h6 class="text-muted text-black mb-1">Approved</h6>
+                                        <h4 class="fw-bold text-dark">{{ $Approved_papers_count }}</h4>
                                     </div>
                                     <div class="icon-box d-flex justify-content-center bg align-items-center"
                                         style="width: 50px; height: 50px; border-radius: 12px;">
@@ -57,7 +57,7 @@
                                 <div class="card-body d-flex justify-content-between align-items-center">
                                     <div>
                                         <h6 class="text-muted text-black mb-1"> total Papers</h6>
-                                        <h4 class="fw-bold text-dark">{{--{{ $Rejected_papers }}  --}} 10</h4>
+                                        <h4 class="fw-bold text-dark">{{ $all_papers_count }}</h4>
                                     </div>
                                     <div class="icon-box d-flex justify-content-center bg align-items-center"
                                         style="width: 50px; height: 50px; border-radius: 12px;">
@@ -248,7 +248,7 @@
 <!-- Notification: Reviewer Comments on Paper -->
 <script>
 // Ensure the script runs after the page is loaded
-document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
     // Initialize Pusher
     const pusher = new Pusher('4b4596e6d2b0e51c0c4f', { cluster: 'ap2' });
 

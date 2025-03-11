@@ -3,15 +3,34 @@
 @section('content')
 
 <section id="Papers-Controller">
-
     <div class="card shadow-sm p-4 mb-4 bg-white rounded">
-        <div  class=" d-flex justify-content-between mt-2">
-          <h2 class="text-black">Papers</h2>
-        </div>
-        <p class="lead text-muted">Manage the Papers, track the papers, and stay updated with the latest notifications.</p>
-    </div>
+       <!-- Paper Table -->
+       <div class="d-flex justify-content-between align-items-center my-3">
+          <h4 class="text-dark">Paper Management</h4>
+          <div>
+              <button class="btn bg text mx-1" onclick="filterPapers('all')">All
+                 <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">{{ $all_papers_count }}</span>
+              </button>
+              <button class="btn bg text mx-1" onclick="filterPapers('In Process')">In Process
+                <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">{{ $In_Process_papers_count }}</span>
+              </button>
+              </button>
+              <button class="btn bg text mx-1" onclick="filterPapers('Approved')">Approved
+              <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">{{ $Approved_papers_count }}</span>
+              </button>
+              <button class="btn bg text mx-1" onclick="filterPapers('Rejected')">Rejected
+                <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">{{ $Rejected_papers_count }}</span>
+              </button>
+              </button>
+          </div>
+      </div>
 
-     <!-- Paper Table -->
+      <div class="d-flex justify-content-end mt-3">
+        {{ $papers->links('pagination::bootstrap-5') }}
+     </div>
+
+   </div>
+
     <div class="table-responsive mt-4">
       <table class="table table-bordered">
 
@@ -30,13 +49,12 @@
           </tr>
         </thead>
         <tbody>
-
             @if ($papers->isNotEmpty())
               @foreach ($papers as $paper)
-              <tr>
+              <tr class="paper-row" data-status="{{ $paper->status }}">
                  <td>{{ $paper->id }}</td>
-                 <td>{{ $paper->conference->title }}</td>
-                 <td>{{ $paper->paper_title }}</td>
+                 <td>{{  Str::limit(  $paper->conference->title , 15 , '....') }}</td>
+                 <td>{{ Str::limit( $paper->paper_title , 15 , '....') }}</td>
                  <td>{{ $paper->paper_code }}</td>
                  <td>v- {{ $paper->version }}</td>
 
@@ -47,13 +65,13 @@
 
                          <select name="status" class="form-select form-select-sm" id="status-select-{{ $paper->id }}"
                                  onchange="handleStatusChange({{ $paper->id }})"
-                                 {{ $paper->status == 'Accepted' ? 'disabled' : '' }}>
+                                 {{ $paper->status == 'Approved' ? 'disabled' : '' }}>
 
                              <!-- Show current status as the first option -->
                              <option value="{{ $paper->status }}" selected>{{ ucfirst($paper->status) }}</option>
 
                              <!-- Display only the other statuses -->
-                             @foreach(['Submitted', 'Accepted', 'Under_review', 'Rejected'] as $status)
+                             @foreach(['In process', 'Approved', 'Rejected'] as $status)
                                  @if($status !== $paper->status)
                                      <option value="{{ $status }}">{{ ucfirst($status) }}</option>
                                  @endif
@@ -156,17 +174,11 @@
                 <td colspan="10" class="p-5">No papers found.</td>
                </tr>
            @endif
-
-
-
-
         </tbody>
       </table>
     </div>
-
+    <div id="no-match">No match found</div>
 </section>
-
 
  </div>
 @endsection
-

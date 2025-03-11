@@ -5,7 +5,7 @@
 
 <section id="coference-Controller">
 
-    <div class="card shadow-sm p-4 mb-4 bg-white rounded">
+    {{-- <div class="card shadow-sm p-4 mb-4 bg-white rounded">
         <div  class=" d-flex justify-content-between mt-2">
           <h2 class="text-black">Conferences</h2>
           <button class="btn bg btn-primary" @click="showModal = true">Add Conference</button>
@@ -90,9 +90,33 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+
+    <div class="card shadow-sm p-4 mb-4 bg-white rounded">
+      <div class="d-flex justify-content-between align-items-center my-3">
+          <h4 class="text-dark">Conferences Management</h4>
+          <div>
+              <button class="btn bg text mx-1" onclick="filterconferences('all')">All
+              <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">10</span>
+              </button>
+              <button class="btn bg text mx-1" onclick="filterconferences('ongoing')">ongoing
+                <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">10</span>
+              </button>
+              </button>
+              <button class="btn bg text mx-1" onclick="filterconferences('completed')">completed
+              <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">10</span>
+              </button>
+              <button class="btn bg text mx-1" onclick="filterconferences('upcoming')">upcoming
+                <span  class="badge bg-pr bg-opacity-10  px-2 text py-2 rounded-pill">10</span>
+              </button>
+              </button>
+          </div>
+      </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          {{ $Conferences->links('pagination::bootstrap-5') }}
+        </div>
     </div>
-
-
 
      <!-- Paper Table -->
     <div class="table-responsive mt-4">
@@ -101,12 +125,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Conference Title</th>
+            <th>Title</th>
             <th>description</th>
             <th>Status</th>
             <th>start_date</th>
             <th>end_date</th>
-            <th>Reg deadline</th>
+            <th>deadline</th>
             <th>location</th>
             <th>Action</th>
           </tr>
@@ -115,20 +139,30 @@
 
             @if ($Conferences->isNotEmpty())
                @foreach ($Conferences as $Conference)
-                  <tr>
+                  <tr class="conferences-row" data-status="{{ $Conference->status }}">
                      <td class="p-3">{{ $Conference->id }}</td>
                      {{-- <td>{{ $Conference->author->name }}</td> --}}
-                     <td class="p-3">{{ $Conference->title }}</td>
+                     <td class="p-3">{{ Str::limit( $Conference->title , 20 , '....') }}</td>
                      <td x-data="{open: false}" class="p-3">
                        <span x-on:click="open = !open" class="description">
-                           {{ Str::limit($Conference->description , 30 , '....') }}
+                           {{ Str::limit($Conference->description , 20 , '....') }}
                        </span>
                        <span x-show="open">
                            {{ $Conference->description }}
                        </span>
 
                      </td>
-                     <td class="text-center p-3"> <span class="bg status text text-center">{{ $Conference->status }}</span></td>
+                     <td class="text-center p-3">
+                        <span @class([
+                            'badge bg-opacity-10 text-primary px-3 py-2 rounded-pill',
+                            'bg text' => $Conference->status == 'upcoming',
+                            'bg-pr text' => $Conference->status == 'ongoing',
+                            'bg-dark' => $Conference->status == 'completed',
+                        ])>
+                            {{ $Conference->status }}
+                        </span>
+
+                    </td>
                      <td class="p-3">{{ $Conference->start_date }}</td>
                      <td class="p-3">{{ $Conference->end_date }}</td>
                      <td class="p-3">{{ $Conference->registration_deadline }}</td>
@@ -143,12 +177,11 @@
                 <td colspan="10" class="p-5">No Conference found.</td>
                </tr>
             @endif
-
-
-
         </tbody>
       </table>
     </div>
+
+    <div id="no-match">No match found</div>
 
 </section>
 
@@ -157,25 +190,3 @@
 
 
 @endsection
-
-<style>
-         #coference-Controller   .status {
-             padding: 5px;
-             border-radius: 8px;
-         }
-
-         #coference-Controller  .modal {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-
-        .modal.show {        #coference-Controller
-            display: block;
-            opacity: 1;
-        }
-
-        #coference-Controller .description{
-            cursor: pointer;
-        }
-</style>

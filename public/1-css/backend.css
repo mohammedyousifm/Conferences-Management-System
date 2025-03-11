@@ -11,6 +11,50 @@ body {
     background-color: #ececec;
 }
 
+.pagination .page-item .page-link {
+    background-color: var(--bg-pr); /* Change background color */
+    color: white; /* Change text color */
+    border-radius: 5px; /* Rounded corners */
+    margin: 2px; /* Space between buttons */
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--bg-color);
+    border: none;
+    font-weight: bold;
+    border-color: #0056b3;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+.paper-row,
+.conferences-row {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    display: none;
+}
+
+#no-match {
+    display: none;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
 /* ---------------------------------------------
     1- sidebar
 ---------------------------------------------  */
@@ -147,4 +191,24 @@ body {
     background-color: #0070f9;
     padding: 5px 12px;
     border-radius: 20px;
+}
+
+#coference-Controller .status {
+    padding: 5px;
+    border-radius: 8px;
+}
+
+#coference-Controller .modal {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#coference-Controller .modal.show {
+    display: block;
+    opacity: 1;
+}
+
+#coference-Controller .description {
+    cursor: pointer;
 }

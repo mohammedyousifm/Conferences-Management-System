@@ -16,7 +16,7 @@ class ConferenceController extends Controller
         // ✅ Get the logged-in controller ID
         $controllerId = Auth::id();
 
-        $Conferences = Conference::where('controller_id', $controllerId)->get();
+        $Conferences = Conference::where('controller_id', $controllerId)->latest()->paginate(10);
         return view('2-dashboard.controller.conference', compact('Conferences'));
     }
 
