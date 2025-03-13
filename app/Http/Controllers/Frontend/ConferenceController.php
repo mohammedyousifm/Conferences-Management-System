@@ -137,4 +137,9 @@ class ConferenceController extends Controller
         // ✅Redirect back with an error message
         return redirect()->back();
     }
+
+    public function indexApply()
+    {
+        return view('1-frontend.apply');
+    }
 }

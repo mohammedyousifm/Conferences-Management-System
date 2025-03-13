@@ -39,6 +39,7 @@ Route::get('/test-event', function () {
 
 Route::get('/', [ConferenceController::class, 'index'])->name('home');
 Route::get('/conference/{id}', [ConferenceController::class, 'show'])->name('conference.show');
+Route::get('/conference/a/apply', [ConferenceController::class, 'indexApply'])->name('conference.indexApply');
 Route::post('/conference/apply', [ConferenceController::class, 'store'])->name('conference.apply');
 
 
