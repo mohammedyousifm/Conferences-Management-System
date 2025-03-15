@@ -3,8 +3,8 @@
 @section('content')
 
     <section id="login">
-        <div class="text-center bg">
-            <p class="p-2 text">LPUNEST Study Grant 7th Edition: Applications Open - Apply Now!</p>
+        <div class="text-center head bg">
+            <p class="p-2">LPUNEST Study Grant 7th Edition: Applications Open - Apply Now!</p>
         </div>
 
         <div class="container">
@@ -61,48 +61,5 @@
     #header,
     footer {
         display: none !important;
-    }
-
-    #login .login-image {
-        height: 100%;
-        border-radius: 15px;
-        border: 2px solid var(--bg-color);
-    }
-
-    #login .divider {
-        background-color: var(--bg-color) !important;
-        border-radius: 5px;
-    }
-
-    #login .divider p {
-        font-size: 12px;
-    }
-
-    #login .lead {
-        font-size: 14px;
-    }
-
-    #login form label {
-        font-size: 11px;
-    }
-
-    #login form input {
-        font-size: 12px;
-    }
-
-
-    #login form input a {
-        font-size: 11px;
-    }
-
-    #login form a {
-        opacity: .5;
-        font-weight: bold;
-    }
-
-    #login form input:focus {
-        outline: none !important;
-        box-shadow: none !important;
-        border-color: var(--bg-color) !important;
     }
 </style>

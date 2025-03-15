@@ -152,7 +152,7 @@
                                📄 View
                            </a>
                            <hr>
-                           <a href="{{ route('reports.controller' , $paper->id) }}" class="dropdown-item text-success">
+                           <a href="" class="dropdown-item text-success">
                                📝 Report
                            </a>
                            <hr>

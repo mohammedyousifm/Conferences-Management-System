@@ -1,7 +1,9 @@
 <<<<<<< HEAD
+
 # Conferences-Management-System
-Conferences Management  System 
-=======
+
+# Conferences Management System
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -11,61 +13,105 @@ Conferences Management  System
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Conference Management System
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The **Conference Management System** is a web-based platform designed to streamline the process of managing academic and professional conferences. It allows users to register, submit research papers, review submissions, and track the status of papers efficiently.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
 
-## Learning Laravel
+### 1. User Roles
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **Author**:
+    -   Register on the system.
+    -   Submit papers for review.
+    -   Track paper status.
+    -   View comments and feedback from reviewers.
+-   **Reviewer**:
+    -   Register on the system.
+    -   Receive papers assigned by the Controller.
+    -   Review and provide feedback.
+    -   Submit reviews.
+-   **Controller**:
+    -   Register on the system.
+    -   Allocate papers to reviewers based on expertise.
+    -   Monitor the status of paper reviews.
+    -   Generate reports on review progress.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 2. Main Functionalities
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **User Registration**: Authors, Reviewers, and Controllers create accounts.
+-   **Paper Submission**: Authors upload research papers.
+-   **Paper Allocation**: Controllers assign papers to reviewers.
+-   **Review Process**: Reviewers evaluate and provide feedback.
+-   **Tracking & Monitoring**: Authors check paper status, Controllers oversee progress.
+-   **Feedback System**: Reviewers submit comments, and Authors receive feedback.
 
-## Laravel Sponsors
+## Data Flow Diagram (DFD)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Level 1 DFD Overview
 
-### Premium Partners
+#### Entities:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **Author**: Submits papers, views status, receives feedback.
+-   **Reviewer**: Reviews papers, submits feedback.
+-   **Controller**: Allocates papers, monitors progress.
 
-## Contributing
+#### Processes:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Paper Submission (P1)**: Authors submit their papers.
+2. **Paper Allocation (P2)**: Controller assigns papers to reviewers.
+3. **Paper Review (P3)**: Reviewers provide feedback.
+4. **Paper Status Management (P4)**: Tracks paper and reviewer progress.
 
-## Code of Conduct
+#### Data Stores:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   **D1**: Author Database (Stores author details and submissions).
+-   **D2**: Reviewer Database (Stores reviewer information and reviews).
+-   **D3**: Paper Database (Stores paper details and status).
+-   **D4**: Review Status Database (Stores feedback and progress data).
 
-## Security Vulnerabilities
+## Technologies Used
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **Laravel**: Backend framework.
+-   **Bootstrap**: Frontend styling.
+-   **MySQL**: Database management.
+-   **JavaScript, AJAX**: Dynamic UI interactions.
+
+## Installation & Setup
+
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/your-username/conference-management-system.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd conference-management-system
+    ```
+3. Install dependencies:
+    ```sh
+    composer install
+    npm install
+    ```
+4. Configure environment variables:
+    ```sh
+    cp .env.example .env
+    php artisan key:generate
+    ```
+5. Migrate database:
+    ```sh
+    php artisan migrate
+    ```
+6. Start the server:
+    ```sh
+    php artisan serve
+    ```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> 899894b (Initial commit)
+This project is open-source and available under the [MIT License](LICENSE).
+
+## contact me
+
+https:://mohammedyousif.com

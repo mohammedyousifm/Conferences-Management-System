@@ -34,6 +34,10 @@
         #header .container-fluid {
             background-color: var(--text-color) !important;
         }
+
+        .active {
+            border-bottom: 1px solid var(--bg-color);
+        }
     </style>
 
 </head>
@@ -57,15 +61,22 @@
                 <div class="header-right">
                     <div class="top-links">
                         <ul class="top-links-container">
-                            <li class="top-links-item d-lg-block d-sm-none d-none"><a href="https://www.lpu.in/jobs/"
-                                    class="jobs-color">Blog / News</a></li>
-                            <li class="top-links-item d-lg-block d-sm-none d-none"><a href="https://happenings.lpu.in/"
-                                    target="_blank" rel="nofollow">Workshops</a></li>
-                            <li class="top-links-item d-lg-block d-sm-none d-none"><a
-                                    href="https://www.lpu.in/conferences/" target="_blank">Venue & Travel</a> </li>
-                            <li class="top-links-item d-lg-block d-sm-none d-none"><a
-                                    href="https://www.lpu.in/international-opportunities.php" target="_blank">Agenda /
-                                    Schedule </a></li>
+
+                            <li class="top-links-item d-lg-block d-sm-none d-none">
+                                <a href="https://www.lpu.in/jobs/"
+                                    class="jobs-color">Blog / News</a>
+                            </li>
+                            <li class="top-links-item d-lg-block d-sm-none d-none">
+                                <a href="https://happenings.lpu.in/"
+                                    target="_blank" rel="nofollow">Workshops</a>
+                            </li>
+                            <li class="top-links-item d-lg-block d-sm-none d-none">
+                                <a href="https://www.lpu.in/conferences/" target="_blank">Venue & Travel</a>
+                            </li>
+                            <li class="top-links-item d-lg-block d-sm-none d-none">
+                                <a href="https://www.lpu.in/international-opportunities.php" target="_blank">Agenda /
+                                    Schedule </a>
+                                </li>
                             <li class="top-links-item d-lg-block d-sm-none d-none"><a
                                     href="https://www.lpu.in/contact-us/contact-us.php">Contact</a></li>
                             <li class="top-links-item d-lg-none d-sm-block"><a
@@ -76,7 +87,9 @@
                             <li class="top-bar-apply top-links-item d-lg-none d-sm-block"><a
                                     href="https://www.lpu.in/programmes/all/" target="_blank"
                                     style="border-color:#ef7d00;">Explore Programmes</a></li>
+
                         </ul>
+
                         <div class="top-links-right">
                             <img src="https://www.lpu.in/lpu-assets/images/logo/social-media-new.svg" width="300"
                                 height="93" class="social-logo" alt="LPU Logo" />
@@ -99,8 +112,8 @@
                                 <ul class="menu-container">
 
                                     <li class="menu-item">
-                                        <a class="menu-link" href="https://www.lpu.in/academics/research.php">
-                                            <div>Home</div>
+                                        <a class="menu-link" href="/">
+                                            <div class="{{ request()->routeIs('home')  ? 'active' : '' }}">Home</div>
                                         </a>
                                     </li>
 
@@ -128,22 +141,25 @@
                                     @auth()
                                     <li class="menu-item current">
                                         <a class="menu-link" href="#">
-                                           <div>My account <i class="fa-solid  text-bg fa-arrow-down" style="font-size: 12; padding-top: 10px;"></i>
+                                           <div class="{{ request()->routeIs('conference.profile') ? 'active' : '' }}">
+                                            My Profile <i class="fa-solid  text-bg fa-arrow-down" style="font-size: 12; padding-top: 10px;"></i>
                                            </div>
                                         </a>
                                        <ul class="sub-menu-container">
+                                         <li class="menu-item">
+                                             <a class="menu-link"
+                                                href="{{ route('conference.profile', Str::slug(Auth::user()->name)) }}">
+                                                <div>my Profile</div>
+                                            </a>
+                                         </li>
                                            <li class="menu-item mega-menu-title">
-                                               <a class="menu-link" href="https://www.lpu.in/about-lpu/">
-                                                   <div>Overview</div>
+                                               <a class="menu-link" href="{{ route('conference.profile_papers') }}">
+                                                   <div>Papers</div>
                                                </a>
                                            </li>
                                            <li class="menu-item"><a class="menu-link"
-                                                   href="https://www.lpu.in/about-lpu/infrastructure.php">
-                                                   <div>Infrastructure</div>
-                                               </a></li>
-                                           <li class="menu-item"><a class="menu-link"
-                                                   href="https://www.lpu.in/about-lpu/accreditation.php">
-                                                   <div>Accreditations & Approvals</div>
+                                                   href="/logout">
+                                                   <div>Log out</div>
                                                </a></li>
                                        </ul>
                                       </li>
@@ -174,7 +190,7 @@
                         </div>
                         @auth()
                          <div class="nav-apply-now">
-                             <a class="nav-apply-now bg" href="{{ route('register') }}"  style="border-radius: 5px">
+                             <a class="nav-apply-now bg" href="{{ route('conference.profile' , Str::slug(Auth::user()->name)) }}"  style="border-radius: 5px">
                                 <i class="fa-solid fa-circle-user" style="font-size: 20;"></i>
                              </a>
                          </div>

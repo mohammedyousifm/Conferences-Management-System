@@ -39,9 +39,15 @@ Route::get('/test-event', function () {
 
 Route::get('/', [ConferenceController::class, 'index'])->name('home');
 Route::get('/conference/{id}', [ConferenceController::class, 'show'])->name('conference.show');
-Route::get('/conference/a/apply', [ConferenceController::class, 'indexApply'])->name('conference.indexApply');
-Route::post('/conference/apply', [ConferenceController::class, 'store'])->name('conference.apply');
 
+Route::middleware(['auth', 'role:author'])->group(function () {
+    Route::get('/conference/apply/{id}', [ConferenceController::class, 'indexApply'])->name('conference.indexApply');
+    Route::post('/conference/apply', [ConferenceController::class, 'store'])->name('conference.apply');
+    Route::put('/papers/{paper}/update-file', [ConferenceController::class, 'updateFile'])->name('paper.update_file');
+    Route::get('/my-profile/{username}', [ConferenceController::class, 'profile'])->name('conference.profile');
+    Route::get('/profile/papers', [ConferenceController::class, 'profile_papers'])->name('conference.profile_papers');
+    Route::get('/profile/papers/{encrypted_id}', [ConferenceController::class, 'paper_view'])->name('conference.paper_view');
+});
 
 
 
@@ -68,9 +74,10 @@ Route::middleware(['auth', 'role:controller'])->group(function () {
     // add conference
     Route::get('/controller/conference', [ConferenceCont::class, 'conference'])->name('conference.controller');
     Route::post('/conference/store', [ConferenceCont::class, 'store'])->name('conference.store');
+
     // reports
-    Route::get('/controller/reports/{paperId}', [ReportsController::class, 'reports'])->name('reports.controller');
-    Route::post('/controller/papers/{paper_id}', [ControllerCont::class, 'report_commint'])->name('report_commint.controller');
+    Route::get('/controller/reports/{paperId}', [ReportsController::class, 'reports'])->name('report');
+    Route::post('/controller/paper/{paper_id}', [ReportsController::class, 'store'])->name('store.report');
 
     // add reviewer | AddreviewerController
     Route::get('/controller/addreviewer', [AddreviewerController::class, 'index'])->name('addReviewer.controller');

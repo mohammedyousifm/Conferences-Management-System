@@ -18,9 +18,10 @@
                 </ul>
 
                 <!-- Apply Now Button -->
-                <button id="applyBtn" class="btn bg text mt-3 shadow-sm">
+                <a href="{{ route('conference.indexApply', $Conference->title) }}" class="btn bg text mt-3 shadow-sm">
                     Apply Now
-                </button>
+                </a>
+
             </div>
 
 

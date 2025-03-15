@@ -1,11 +1,11 @@
 @extends('4-layout.frantend')
-@section('title', 'Sign Up')
+@section('title', 'Sign in')
 @section('content')
 
     {{-- register --}}
     <section id="login">
-        <div class="text-center bg">
-            <p class="p-2 text">LPUNEST Study Grant 7th Edition: Applications Open - Apply Now!</p>
+        <div class="text-center head bg">
+            <p class="p-2">LPUNEST Study Grant 7th Edition: Applications Open - Apply Now!</p>
         </div>
 
         <div class="container">
@@ -45,7 +45,7 @@
                             <label class="form-label" for="password">Password</label>
                             <input id="password" type="password" name="password" required autocomplete="new-password"
                                 class="form-control">
-                            @error('password')                        <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Confirm Password Field -->
@@ -53,7 +53,7 @@
                             <label class="form-label" for="password_confirmation">Confirm Password</label>
                             <input id="password_confirmation" type="password" name="password_confirmation" required
                                 autocomplete="new-password" class="form-control">
-                            @error('password_confirmation')                        <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('password_confirmation') <div class="text-danger small">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Submit Button -->
@@ -66,53 +66,11 @@
 
 
     </section>
+
 @endsection
 <style>
     #header,
     footer {
         display: none !important;
-    }
-
-    #login .login-image {
-        height: 100%;
-        border-radius: 15px;
-        border: 2px solid var(--bg-color);
-    }
-
-    #login .divider {
-        background-color: var(--bg-color) !important;
-        border-radius: 5px;
-    }
-
-    #login .divider p {
-        font-size: 12px;
-    }
-
-    #login .lead {
-        font-size: 14px;
-    }
-
-    #login form label {
-        font-size: 11px;
-    }
-
-    #login form input {
-        font-size: 12px;
-    }
-
-
-    #login form input a {
-        font-size: 11px;
-    }
-
-    #login form a {
-        opacity: .5;
-        font-weight: bold;
-    }
-
-    #login form input:focus {
-        outline: none !important;
-        box-shadow: none !important;
-        border-color: var(--bg-color) !important;
     }
 </style>

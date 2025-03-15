@@ -124,17 +124,6 @@
                 </a>
             </li>
 
-            <li class="nav-item mb-1">
-                <a class="nav-link text-white d-flex align-items-center" href="{{ route('reports.controller' , 1) }}">
-
-                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
-                        <i class="fas fa-chart-bar me-2"></i>
-                      </div>
-
-                    <span>Reports</span>
-                </a>
-            </li>
-
             @endif
             <li class="nav-item mb-1">
                 <a class="nav-link text-white d-flex align-items-center {{ request()->routeIs('profile.edit')  ? 'active' : '' }}" href="{{ route('profile.edit') }}">
