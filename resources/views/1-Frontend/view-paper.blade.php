@@ -2,15 +2,7 @@
 @section('title', 'My profile | papers')
 @section('content')
     <section id="acouunt" class="pb-5">
-        {{-- Navbar --}}
-        <nav>
-            <ul class="bg p-2">
-                <li><a href="{{ route('conference.profile', Str::slug(Auth::user()->name)) }}">Profile</a></li>
-                <li><a class="{{ request()->routeIs('conference.profile_papers', 'conference.paper_view') ? 'active' : '' }}"
-                        href="{{ route('conference.profile_papers') }}">Papers</a></li>
-                <li><a href="/Logout">Logout</a></li>
-            </ul>
-        </nav>
+
 
         {{-- here i want show about the paper and if the there --}}
         <div class="container">
@@ -58,10 +50,13 @@
                         @endif
 
 
-                        @if (!empty($report->report_file) && file_exists(public_path($report->report_file)))
-                            <a class="btn bg  mb-2 text" href="{{ asset($report->report_file) }}" download>Report
-                                file</a>
+                        @if (!empty($report->report_file))
+                            <a class="btn bg text"
+                                href="{{ Storage::url('public/reportFile/' . basename($report->report_file)) }}"
+                                target="_blank">View Report</a>
+
                         @endif
+
                     </div>
 
                 </div>

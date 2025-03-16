@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Frontend\ConferenceController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 
 use App\Http\Controllers\Dashboard\Author\DashboardController as AuthorCont;
 use App\Http\Controllers\Dashboard\Controller\DashboardController as ControllerCont;
@@ -102,7 +104,15 @@ Route::middleware(['auth', 'role:reviewer'])->group(function () {
     Controllers (3)
     This controller control the Flow of Frontend
 ---------------------------------------------  */
+Route::get('/report/{filename}', function ($filename) {
+    $filePath = "private/public/reportFile/{$filename}";
 
+    if (Storage::exists($filePath)) {
+        return Response::file(storage_path("app/{$filePath}"));
+    }
+
+    abort(404); // File not found
+})->middleware('auth');
 /* ---------------------------------------------
     Controllers (4)
     This controller control the Flow of Frontend

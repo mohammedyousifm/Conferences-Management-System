@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ControllerReport;
 use App\Models\Paper;
 use App\Models\Reviewer;
 use App\Models\Paper_controller;
@@ -23,54 +25,66 @@ class ReportsController extends Controller
     }
 
     /**
-     * Store report and sent it to the Authar.
+     * Store report and send it to the Author.
      *
+     * @param int $paper_id The paper ID.
      * @param Request $request The incoming HTTP request.
-     * @param  $paper_id The paper Id.
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store($paper_id, Request $request)
     {
-        DB::table('paper_controller')->delete(); // Delete all rows
-        DB::statement("ALTER TABLE paper_controller AUTO_INCREMENT = 1"); // Reset auto-increment
         try {
+            // ✅ Validate Input
             $validated = $request->validate([
                 'report' => 'required',
-                'paper_file' => 'nullable|file|max:2048'
+                'paper_file' => 'nullable|file|mimes:pdf,doc,docx|max:2048'
             ]);
+
+            // ✅ Start Transaction
+            DB::beginTransaction();
 
             $store = new Paper_controller();
             $store->paper_id = $paper_id;
             $store->controller_id = auth()->id();
-            $store->report_comment = $request->input('report');
+            $store->report_comment = $validated['report'];
 
-            // ✅ Handle File Upload
+            // ✅ Handle File Upload Securely
             if ($request->hasFile('paper_file') && $request->file('paper_file')->isValid()) {
                 $file = $request->file('paper_file');
 
-                // Get the next paper code (assuming it's stored as #00001 format)
+                // Get next paper code
                 $latestPaper = Paper::latest()->first();
                 $nextPaperCode = $latestPaper ? intval(ltrim($latestPaper->paper_code, '#')) + 1 : 1;
-                $formattedCode = str_pad($nextPaperCode, 5, '0', STR_PAD_LEFT); // Ensures 5-digit format
+                $formattedCode = str_pad($nextPaperCode, 5, '0', STR_PAD_LEFT);
 
                 // Construct file name
                 $filename = "paper_{$formattedCode}." . $file->getClientOriginalExtension();
-                $filePath = 'reportFile/' . $filename;
+                $filePath = "reportFile/{$filename}";
 
-                // Move file
-                $file->move(public_path('reportFile'), $filename);
+                // Store file in Laravel's storage
+                $file->storeAs('public/reportFile', $filename);
 
-                // Store file path
+                // Save file path in the database
                 $store->report_file = $filePath;
             }
 
             $store->save();
 
+            // ✅ Retrieve Author Details Securely
+            $Author = User::where('id', Paper::where('id', $paper_id)->value('user_id'))->firstOrFail();
+
+            // ✅ Send Email Notification
+            Mail::to($Author->email)->send(new ControllerReport($Author->name, $validated['report'], $paper_id));
+
+            // ✅ Commit Transaction
+            DB::commit();
+
             // ✅ Flash Message
             flash()->options(['timeout' => 5000, 'position' => 'top-center'])->success('Report submitted successfully!');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
+            DB::rollBack();
             Log::error('Error submitting report: ' . $e->getMessage());
-            flash()->options(['timeout' => 5000, 'position' => 'top-center'])->error('Error: ' . $e->getMessage());
+            flash()->options(['timeout' => 5000, 'position' => 'top-center'])->error('Error: Something went wrong.');
         }
 
         return back();

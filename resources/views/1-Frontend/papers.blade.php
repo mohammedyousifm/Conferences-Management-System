@@ -2,15 +2,7 @@
 @section('title', 'My profile | papers')
 @section('content')
     <section id="acouunt" class="pb-5">
-        {{-- Navbar --}}
-        <nav>
-            <ul class="bg p-2">
-                <li><a href="{{ route('conference.profile', Str::slug(Auth::user()->name)) }}">Profile</a></li>
-                <li><a class="{{ request()->routeIs('conference.profile_papers') ? 'active' : '' }}"
-                        href="{{ route('conference.profile_papers') }}">Papers</a></li>
-                <li><a href="/Logout">Logout</a></li>
-            </ul>
-        </nav>
+
 
 
         <div class="info">
@@ -94,23 +86,7 @@
     }
 
     #acouunt {
-        padding-top: 110px
-    }
-
-    #acouunt nav ul {
-        display: flex;
-        justify-content: center
-    }
-
-    #acouunt nav ul li a {
-        opacity: .7;
-        margin: 8px;
-        color: white;
-        font-weight: bold;
-    }
-
-    #acouunt nav ul li a:hover {
-        opacity: 1;
+        padding-top: 150px;
     }
 
     #acouunt .active {

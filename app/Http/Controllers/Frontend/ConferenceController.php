@@ -15,13 +15,15 @@ use App\Models\Activity;
 use App\Models\Paper_controller;
 use App\Events\NewPaper;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ControllerReport;
 
 class ConferenceController extends Controller
 {
     public function index()
     {
 
-        // ✅ Pring all conferences date from  Conference tabe and store in $conferences
+        // ✅ Pring all conferences date from  Conference tabe and store in $conference
         $conferences = Conference::all();
         return view('1-frontend.home', compact('conferences'));
     }

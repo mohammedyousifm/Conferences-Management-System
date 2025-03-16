@@ -38,6 +38,23 @@
         .active {
             border-bottom: 1px solid var(--bg-color);
         }
+
+        .Navbar-s  nav ul {
+          display: flex;
+          justify-content: center
+        }
+
+
+         .Navbar-s  nav ul li a {
+             opacity: .7;
+             margin: 8px;
+             color: white;
+             font-weight: bold;
+         }
+
+         .Navbar-s  nav ul li a:hover {
+             opacity: 1;
+         }
     </style>
 
 </head>
@@ -165,22 +182,28 @@
                                       </li>
                                     @endauth
 
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="{{ route('conference.profile_papers') }}">
+                                            <div class="{{ request()->routeIs('conference.profile_papers', 'conference.paper_view' )  ? 'active' : '' }}">Papers</div>
+                                        </a>
+                                    </li>
+
 
                                     <li class="menu-item">
-                                        <a class="menu-link" href="https://www.lpu.in/academics/research.php">
+                                        <a class="menu-link" href="">
                                             <div>Speakers
                                             </div>
                                         </a>
                                     </li>
 
                                     <li class="menu-item">
-                                        <a class="menu-link" href="https://www.lpu.in/academics/research.php">
+                                        <a class="menu-link" href="">
                                             <div>FAQs </div>
                                         </a>
                                     </li>
 
                                     <li class="menu-item">
-                                        <a class="menu-link" href="https://www.lpu.in/academics/research.php">
+                                        <a class="menu-link" href="">
                                             <div>Contact</div>
                                         </a>
                                     </li>
@@ -211,8 +234,9 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="header-wrap-clone"></div> -->
     </header>
+
+
 
 
     @yield('content')
