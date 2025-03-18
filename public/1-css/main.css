@@ -47,6 +47,19 @@ body {
     color: var(--bg-color) !important;
 }
 
+/* size */
+.fs-11 {
+    font-size: 11px;
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-13 {
+    font-size: 13px;
+}
+
 a {
     text-decoration: none !important;
 }

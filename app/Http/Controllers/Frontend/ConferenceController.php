@@ -17,6 +17,7 @@ use App\Events\NewPaper;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ControllerReport;
+use App\Mail\NewPaper as PaperNew;
 
 class ConferenceController extends Controller
 {
@@ -36,10 +37,10 @@ class ConferenceController extends Controller
         return view('1-frontend.conference-details', compact('Conference'));
     }
 
-    public function indexApply($id)
+    public function create($id)
     {
-        $conferenceid = $id;
-        return view('1-frontend.apply', compact('conferenceid'));
+        $Conference = Conference::findOrFail($id);
+        return view('1-frontend.apply', compact('Conference'));
     }
 
     /**
@@ -58,8 +59,6 @@ class ConferenceController extends Controller
             // DB::table('papers')->delete(); // Delete all rows
             // DB::statement("ALTER TABLE papers AUTO_INCREMENT = 1"); // Reset auto-increment
 
-
-            // ✅ Validate Input
             $validatedData = $request->validate([
                 'author_name' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
@@ -72,8 +71,11 @@ class ConferenceController extends Controller
                 'paper_file' => 'required|max:2048',
             ]);
 
+            DB::beginTransaction();
+
             // ✅ Generate Paper ID with leading zeros (e.g., 000001, 000002)
             $paperId = '#' . str_pad(Paper::max('id') + 1, 6, '0', STR_PAD_LEFT);
+
             // ✅ Store paper details in the database
             $paper = new Paper();
             $paper->user_id = auth::id();
@@ -111,7 +113,6 @@ class ConferenceController extends Controller
 
             $paper->save();
 
-
             // ✅ Insert Recent Activity
             Activity::create([
                 'paper_code' => $paperId,
@@ -120,11 +121,17 @@ class ConferenceController extends Controller
                 'description' => 'submitted Paper ID'
             ]);
 
-            // ✅ Get the controller ID of the conference
-            $controllerId = Conference::where('id', $paper->conference_id)->value('controller_id');
+            DB::commit();
 
             // Fire event to new paper
             event(new NewPaper($paperId));
+
+            // ✅ Get the controller ID of the conference
+            $controllerId = Conference::where('id', $paper->conference_id)->value('controller_id');
+            $Controller = User::findOrFail($controllerId);
+
+            // ✅ send mail
+            mail::to($Controller->email)->send(new PaperNew($Controller,  $paperId));
 
             // ✅ Redirect Back with Success Message
             flash()
@@ -134,6 +141,7 @@ class ConferenceController extends Controller
                 ])
                 ->success('Paper submitted successfully!!');
         } catch (\Exception $e) {
+
             // ✅ Log the error
             Log::error('Paper submission failed: ' . $e->getMessage());
 
@@ -146,7 +154,7 @@ class ConferenceController extends Controller
         }
 
         // ✅Redirect back with an error message
-        return redirect()->back();
+        return redirect()->route('conference.profile_papers');
     }
 
     public function profile($username)
@@ -172,9 +180,7 @@ class ConferenceController extends Controller
         // Get the authenticated user's ID
         $userId = Auth::id();
 
-        $papers = Paper::where('user_id', $userId)->get();
-
-
+        $papers = Paper::where('user_id', $userId)->latest()->get();
 
         return view('1-frontend.papers', compact('papers'));
     }

@@ -42,8 +42,8 @@ Route::get('/test-event', function () {
 Route::get('/', [ConferenceController::class, 'index'])->name('home');
 Route::get('/conference/{id}', [ConferenceController::class, 'show'])->name('conference.show');
 
-Route::middleware(['auth', 'role:author'])->group(function () {
-    Route::get('/conference/apply/{id}', [ConferenceController::class, 'indexApply'])->name('conference.indexApply');
+Route::middleware(['auth', 'role:Author'])->group(function () {
+    Route::get('/conference/apply/{id}', [ConferenceController::class, 'create'])->name('conference.create');
     Route::post('/conference/apply', [ConferenceController::class, 'store'])->name('conference.apply');
     Route::put('/papers/{paper}/update-file', [ConferenceController::class, 'updateFile'])->name('paper.update_file');
     Route::get('/my-profile/{username}', [ConferenceController::class, 'profile'])->name('conference.profile');
@@ -67,24 +67,32 @@ Route::middleware(['auth', 'role:author'])->group(function () {
     Controllers - Controllers (3)
     This controller control the Flow of Controllers -dashboard
 ---------------------------------------------  */
-Route::middleware(['auth', 'role:controller'])->group(function () {
-    Route::get('/dashboard/controller', [ControllerCont::class, 'index'])->name('controller.dashboard');
-    Route::get('/controller/papers', [ControllerCont::class, 'papers_index'])->name('papers.controller');
-    Route::post('/controller/papers/{paper}/assign', [ControllerCont::class, 'assignReviewers'])->name('assign.reviewers');
-    Route::post('/controller/update-status/{id}', [ControllerCont::class, 'updateStatus'])->name('papers.updateStatus');
-    Route::get('/controller/papers/{id}', [ControllerCont::class, 'review_paper'])->name('review_papers.controller');
-    // add conference
-    Route::get('/controller/conference', [ConferenceCont::class, 'conference'])->name('conference.controller');
-    Route::post('/conference/store', [ConferenceCont::class, 'store'])->name('conference.store');
+Route::prefix('controller')->middleware(['auth', 'role:controller'])->group(function () {
 
-    // reports
-    Route::get('/controller/reports/{paperId}', [ReportsController::class, 'reports'])->name('report');
-    Route::post('/controller/paper/{paper_id}', [ReportsController::class, 'store'])->name('store.report');
+    // ✅ Controller Dashboard
+    Route::get('/', [ControllerCont::class, 'index'])->name('controller.dashboard');
 
-    // add reviewer | AddreviewerController
-    Route::get('/controller/addreviewer', [AddreviewerController::class, 'index'])->name('addReviewer.controller');
-    Route::post('/controller/send-invitation', [AddreviewerController::class, 'sendInvitation'])->name('send-invitation');
+    // ✅ Papers
+    Route::get('/papers', [ControllerCont::class, 'papers_index'])->name('controller.papers');
+    Route::post('/papers/{paper}/assign', [ControllerCont::class, 'assignReviewers'])->name('controller.assign_reviewers');
+    Route::post('/papers/update-status/{id}', [ControllerCont::class, 'updateStatus'])->name('controller.papers.update_status');
+    Route::get('/papers/{id}', [ControllerCont::class, 'review_paper'])->name('controller.review_papers');
+
+    // ✅ Conferences
+    Route::get('/conferences', [ConferenceCont::class, 'conferences'])->name('controller.conferences');
+    Route::get('/conference/create', [ConferenceCont::class, 'create'])->name('controller.create_conference');
+    Route::post('/conference/store', [ConferenceCont::class, 'store'])->name('controller.store_conference');
+
+    // ✅ Reports
+    Route::get('/report/{PaperId}', [ReportsController::class, 'create'])->name('controller.report');
+    Route::post('/report/store/{PaperId}', [ReportsController::class, 'store'])->name('controller.store_report');
+
+    // ✅ Reviewers
+    Route::get('/add-reviewer', [AddreviewerController::class, 'create'])->name('controller.add_reviewer');
+    Route::post('/add-reviewer/store', [AddreviewerController::class, 'store'])->name('controller.store_reviewer');
 });
+Route::get('u/reviewer/register/{token}', [AddreviewerController::class, 'reviewer_register'])->name('reviewer.register');
+Route::post('u/reviewer/register', [AddreviewerController::class, 'store_reviewer'])->name('reviewer.store');
 
 
 /* ---------------------------------------------

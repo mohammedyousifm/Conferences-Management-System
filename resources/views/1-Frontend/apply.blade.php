@@ -5,21 +5,22 @@
 
         <div class="row">
 
-            <div class="col-6 mt-5">
+            <div class="col-7 mt-5">
                 <div class="mt-2 container pt-2 pb-2 border rounded shadow-sm bg-light ">
                     <div class="heading-Details">
                         <h1 class="display-4 fw-bold  mb-3">Conference Details</h1>
                         <ul>
-                            <li><i class="fa-solid text-bg fa-arrow-right"></i> Conference Name: <span>Aliquam
-                                    doloremque</span>
+                            <li><i class="fa-solid text-bg fa-arrow-right"></i> Conference Name:
+                                <span>{{ $Conference->title }}</span>
                             </li>
-                            <li><i class="fa-solid text-bg fa-arrow-right"></i> Conference Date: <span>2025-03-29</span>
+                            <li><i class="fa-solid text-bg fa-arrow-right"></i> Conference Date:
+                                <span>{{ $Conference->start_date }}</span>
                             </li>
-                            <li><i class="fa-solid text-bg fa-arrow-right"></i> Conference Location: <span>LPU</span></li>
+                            <li><i class="fa-solid text-bg fa-arrow-right"></i> Conference Location:
+                                <span>{{ $Conference->location }}</span>
+                            </li>
                             <div class="divider">
                         </ul>
-
-
                         <div class="d-flex justify-content-between">
                             <!-- Hidden Author & Paper Details -->
                             <div class="d-none" id="authorDetails">
@@ -58,90 +59,85 @@
                             </div>
 
                         </div>
-
                     </div>
                 </div>
             </div>
 
-            <div class="col-6 mt-5">
+            <div class="col-5 mt-5">
                 <!-- Application Form -->
-                <div class="mt-2 container pt-2 pb-2 border rounded shadow-sm bg-light">
+                <div class="heading text p-1 bg text-center">
+                    <h4 class="text fs-13">Step 1: Author Information</h4>
+                </div>
+                <div class="container pt-2 pb-1 border rounded shadow-sm bg-light">
                     <!-- Form -->
                     <form action="{{ route('conference.apply') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <!-- Step 1 -->
                         <div id="step1">
-                            <div class="heading text p-1 bg text-center">
-                                <h4 class="text">Step 1: Author Information</h4>
-                                <p class="mt-1 ">Please provide your personal details, including your name and email, so
-                                    we
-                                </p>
-                            </div>
 
-                            <input type="hidden" value="{{ $conferenceid }}" name="conference_id">
+                            <input type="hidden" value="{{ $Conference->id }}" name="conference_id">
+
                             <div class="mt-3 mb-3">
-                                <label class="form-label">Author Name</label>
-                                <input type="text" class="form-control" name="author_name" id="authorName"
+                                <label class="form-label fs-11">Author Name</label>
+                                <input type="text" class="form-control fs-12" name="author_name" id="authorName"
                                     placeholder="Enter your name">
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" id="authorEmail"
+                                <label class="form-label fs-11">Email</label>
+                                <input type="email" class="form-control fs-12" name="email" id="authorEmail"
                                     placeholder="Enter your email">
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label">Phone</label>
-                                <input type="tel" class="form-control" name="phone" id="authorPhone"
+                                <label class="form-label fs-11">Phone</label>
+                                <input type="tel" class="form-control fs-12" name="phone" id="authorPhone"
                                     placeholder="Enter your Phone Number">
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" class="form-control" name="address" id="authorAddress"
+                                <label class="form-label fs-11">Address</label>
+                                <input type="text" class="form-control fs-12" name="address" id="authorAddress"
                                     placeholder="Enter your Address">
                             </div>
+
                             <div class="mb-3">
-                                <label class="form-label">Number of Authors</label>
-                                <input type="number" class="form-control" name="number_of_authors" id="authorNumber"
+                                <label class="form-label fs-11">Number of Authors</label>
+                                <input type="number" class="form-control fs-12" name="number_of_authors" id="authorNumber"
                                     required min="1" placeholder="Enter Number of Authors">
                             </div>
-                            <button type="button" class="btn bg text" id="nextStep1">Next</button>
+
+                            <button type="button" class="btn bg fs-12 text" id="nextStep1">Next</button>
                         </div>
 
                         <!-- Step 2 -->
                         <div id="step2" class="d-none">
-                            <div class="heading p-2 bg text-center">
-                                <h4 class="text">Step 2: Paper Details</h4>
-                                <p class="mt-1 text">Provide paper details.</p>
-                            </div>
                             <div class="mt-3 mb-3">
-                                <label class="form-label">Paper Title</label>
-                                <input type="text" class="form-control" name="paper_title" id="paperTitle"
+                                <label class="form-label fs-11">Paper Title</label>
+                                <input type="text" class="form-control fs-12" name="paper_title" id="paperTitle"
                                     placeholder="Enter paper title">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Abstract</label>
-                                <textarea class="form-control" name="abstract" id="paperAbstract" rows="2"
+                                <label class="form-label fs-11">Abstract</label>
+                                <textarea class="form-control fs-12" name="abstract" id="paperAbstract" rows="2"
                                     placeholder="Enter abstract"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Conference Keywords</label>
-                                <input type="text" class="form-control" name="keywords" id="paperKeywords"
+                                <label class="form-label fs-11">Conference Keywords</label>
+                                <input type="text" class="form-control fs-12" name="keywords" id="paperKeywords"
                                     placeholder="Enter conference keywords">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Upload Paper</label>
-                                <input type="file" class="form-control" name="paper_file" id="paperFile">
+                                <label class="form-label fs-11">Upload Paper</label>
+                                <input type="file" class="form-control fs-12" name="paper_file" id="paperFile">
                             </div>
-                            <button type="button" class="btn bg text" id="nextStep2">Next</button>
+                            <button type="button" class="btn fs-12 bg text" id="nextStep2">Next</button>
                         </div>
 
                         <!-- Submit Button -->
                         <div id="submitSection" class="d-none mt-3">
-                            <div class="heading p-2 bg text-center">
-                                <h4 class="text">Step 3: Submit Details</h4>
-                                <p class="mt-1 text">pleac make sure of your Details.</p>
-                            </div>
-                            <button type="submit" class="btn bg mt-3 text" id="submitBtn">Submit</button>
+                            <p class="m-1">Please make sure of your Details.</p>
+                            <button type="submit" class="btn bg mt-3 text w-100" id="submitBtn">Submit</button>
                             <div class="loading" id="loadingText">Loading...</div>
                         </div>
                     </form>

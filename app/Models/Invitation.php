@@ -16,4 +16,8 @@ class Invitation extends Model
         'token',
         'used',
     ];
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
 }

@@ -29,7 +29,7 @@
             <div class="table-responsive h-100">
                 <table class="table table-bordered">
                     <thead>
-                        <tr style="background-color: var(--bg-color)">
+                        <tr style="background-color: var(--bg-color);">
                             <th style=" font-size: 12px">@</th>
                             <th style=" font-size: 12px">Title</th>
                             <th style=" font-size: 12px">Conference</th>
@@ -42,31 +42,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($papers as $Paper)
+
+                        @if ($papers->isNotEmpty())
+                            @foreach ($papers as $Paper)
+                                <tr>
+                                    <td class="badge bg-dark bg-opacity-10 mt-3  px-3 py-2 rounded-pill text-dark"
+                                        style=" font-size: 12pxl"> {{ $loop->iteration }}</td>
+                                    <td class="pt-3" style=" font-size: 12px">{{ $Paper->paper_title }}</td>
+                                    <td class="pt-3" style=" font-size: 12px">{{ Str::limit($Paper->paper_title, 15, '....') }}</td>
+                                    <td class="pt-3" style=" font-size: 12px">{{ $Paper->paper_code }}</td>
+                                    <td class="pt-3" style=" font-size: 12px">v- {{ $Paper->version }}</td>
+                                    <td class="pt-3" style=" font-size: 12px">
+                                        <span
+                                            class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">{{ $Paper->status }}</span>
+                                    </td class="pt-3" style=" font-size: 12px">
+                                    <td class="pt-3" style=" font-size: 12px">{{ $Paper->created_at->format('Y M D') }}</td>
+                                    <td class="pt-3" style=" font-size: 11px">
+                                        <a href="{{ $Paper->paper_file }}" class="btn bg text mb-2  btn-sm" download
+                                            target="_blank">View Paper</a>
+                                    </td class="pt-3" style=" font-size: 12px">
+
+                                    <td class="pt-3" style=" font-size: 11px">
+                                        <a href="{{ route('conference.paper_view', ['encrypted_id' => encrypt($Paper->id)]) }}"
+                                            class="btn bg text mb-2  btn-sm">View More</a>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        @else
                             <tr>
-                                <td class="badge bg-dark bg-opacity-10 mt-3  px-3 py-2 rounded-pill text-dark"
-                                    style=" font-size: 12pxl"> {{ $loop->iteration }}</td>
-                                <td class="pt-3" style=" font-size: 12px">{{ $Paper->paper_title }}</td>
-                                <td class="pt-3" style=" font-size: 12px">{{ Str::limit($Paper->paper_title, 15, '....') }}</td>
-                                <td class="pt-3" style=" font-size: 12px">{{ $Paper->paper_code }}</td>
-                                <td class="pt-3" style=" font-size: 12px">v- {{ $Paper->version }}</td>
-                                <td class="pt-3" style=" font-size: 12px">
-                                    <span
-                                        class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">{{ $Paper->status }}</span>
-                                </td class="pt-3" style=" font-size: 12px">
-                                <td class="pt-3" style=" font-size: 12px">{{ $Paper->created_at->format('Y M D') }}</td>
-                                <td class="pt-3" style=" font-size: 11px">
-                                    <a href="{{ $Paper->paper_file }}" class="btn bg text mb-2  btn-sm" download
-                                        target="_blank">View Paper</a>
-                                </td class="pt-3" style=" font-size: 12px">
-
-                                <td class="pt-3" style=" font-size: 11px">
-                                    <a href="{{ route('conference.paper_view', ['encrypted_id' => encrypt($Paper->id)]) }}"
-                                        class="btn bg text mb-2  btn-sm">View More</a>
-                                </td>
-
+                                <td colspan="10" class="p-5">No papers found.</td>
                             </tr>
-                        @endforeach
+                        @endif
+
                     </tbody>
                 </table>
             </div>
@@ -83,6 +91,10 @@
 
     .info .head h3 {
         font-size: 16px;
+    }
+
+    .head {
+        border-radius: 5px;
     }
 
     #acouunt {

@@ -17,6 +17,7 @@ body {
     border-radius: 5px; /* Rounded corners */
     margin: 2px; /* Space between buttons */
     transition: all 0.3s ease-in-out; /* Smooth transition */
+    font-size: 12px;
 }
 
 .pagination .page-item.active .page-link {
@@ -59,7 +60,7 @@ body {
     1- sidebar
 ---------------------------------------------  */
 .sidebar {
-    width: 230px;
+    width: 190px;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -141,7 +142,7 @@ body {
         left: 0; /* Show sidebar by default on larger screens */
     }
     .main-content {
-        margin-left: 225px; /* Adjust main content for sidebar */
+        margin-left: 180px; /* Adjust main content for sidebar */
     }
 }
 

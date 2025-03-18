@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\Conference;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\DB;
 
 class ConferenceController extends Controller
 {
-    public function conference()
+    public function conferences()
     {
         // ✅ Get the logged-in controller ID
         $controllerId = Auth::id();
@@ -20,9 +20,18 @@ class ConferenceController extends Controller
         return view('2-dashboard.controller.conference', compact('Conferences'));
     }
 
+    public function create()
+    {
+
+        return view('2-dashboard.controller.add-conferences');
+    }
+
+
     public function store(Request $request)
     {
 
+        // DB::table('conferences')->delete(); // Delete all rows
+        // DB::statement("ALTER TABLE conferences AUTO_INCREMENT = 1"); // Reset auto-increment
         try {
             // ✅ Validate Input
             $request->validate([
@@ -30,7 +39,7 @@ class ConferenceController extends Controller
                 'description' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'registration_deadline' => 'required|date|before:start_date',
+                'registration_deadline' => 'required|date|before_or_equal:end_date',
                 'location' => 'required|string|max:255',
             ]);
 
@@ -52,10 +61,10 @@ class ConferenceController extends Controller
                     'timeout' => 5000,
                     'position' => 'top-center',
                 ])
-                ->success('Conference added successfully!');
+                ->success('Conference created successfully!');
         } catch (\Exception $e) {
             // ✅ Log the Error Correctly
-            Log::error('Conference Store Error: ' . $e->getMessage());
+            Log::error('Conference create Error: ' . $e->getMessage());
 
             // ✅ Redirect Back with Error Message
             flash()
@@ -63,7 +72,7 @@ class ConferenceController extends Controller
                     'timeout' => 5000,
                     'position' => 'top-center',
                 ])
-                ->error('Failed to add Conference! ' . $e->getMessage());
+                ->error('Failed to create Conference! ' . $e->getMessage());
         }
 
         return back();

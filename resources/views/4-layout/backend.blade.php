@@ -49,7 +49,7 @@
             ],
             'paper' => [
                 'reviewer' => 'papers.reviewer',
-                'controller' => 'papers.controller',
+                'controller' => 'controller.papers',
                 'author' => 'track_status.author',
                 'default' => 'home',
             ],
@@ -67,18 +67,18 @@
 
         <!-- Logo & Toggle Button -->
         <div class="d-flex align-items-center justify-content-center mb-3">
-            <h4 class="fw-bold p-3">Dashboard</h4>
+            <h4 class="fw-bold p-3" style="font-size: 13px">Dashboard</h4>
         </div>
 
         <!-- Navigation Menu -->
-        <ul class="nav flex-column">
+        <ul class="nav flex-column" style="font-size: 12px">
 
             <li class="nav-item mb-1">
                 <a class="nav-link text-white d-flex align-items-center
                  {{ request()->routeIs('reviewer.dashboard' , 'controller.dashboard' ,  'author.dashboard')  ? 'active' : '' }} "
                   href="{{ getUserRoute('dashboard') }}">
 
-                  <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 25px;">
+                  <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 20px;">
                     <i class="fas fa-home me-2"></i>
                   </div>
 
@@ -88,10 +88,10 @@
             </li>
 
             <li class="nav-item mb-1">
-                <a class="nav-link {{ request()->routeIs('papers.reviewer' , 'papers.controller' , 'track_status.author' , 'review_papers.controller')  ? 'active' : '' }}  text-white d-flex align-items-center"
+                <a class="nav-link {{ request()->routeIs('controller.papers' , 'papers.controller' , 'track_status.author' , 'controller.review_papers')  ? 'active' : '' }}  text-white d-flex align-items-center"
                  href="{{ getUserRoute('paper') }}">
 
-                 <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 25px;">
+                 <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 20px;">
                      <i class="fas fa-file-alt me-2"></i>
                  </div>
                     <span>Papers</span>
@@ -102,10 +102,10 @@
             @if (Auth::user()->user_role == 'controller')
 
              <li class="nav-item mb-1">
-                 <a class="nav-link {{ request()->routeIs('conference.controller')  ? 'active' : '' }} text-white d-flex align-items-center"
-                     href="{{ route('conference.controller') }}">
+                 <a class="nav-link {{ request()->routeIs('controller.conferences', 'controller.ConferenceCreate')  ? 'active' : '' }} text-white d-flex align-items-center"
+                     href="{{ route('controller.conferences') }}">
 
-                     <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
+                     <div class="icon-box d-flex justify-content-center align-items-center me-3"style="width: 30px; height: 15px;">
                         <i class="fas fa-file-alt me-2"></i>
                       </div>
                      <span>Conference</span>
@@ -113,10 +113,10 @@
              </li>
 
              <li class="nav-item mb-1">
-                <a class="nav-link {{ request()->routeIs('addReviewer.controller')  ? 'active' : '' }} text-white d-flex align-items-center"
-                    href="{{ route('addReviewer.controller') }}">
+                <a class="nav-link {{ request()->routeIs('controller.add_reviewer')  ? 'active' : '' }} text-white d-flex align-items-center"
+                    href="{{ route('controller.add_reviewer') }}">
 
-                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
+                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 20px;">
                         <i class="fa-solid fa-plus mt-2"></i>
                       </div>
 
@@ -128,7 +128,7 @@
             <li class="nav-item mb-1">
                 <a class="nav-link text-white d-flex align-items-center {{ request()->routeIs('profile.edit')  ? 'active' : '' }}" href="{{ route('profile.edit') }}">
 
-                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
+                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 20px;">
                         <i class="fas fa-user me-2"></i>
                       </div>
 
@@ -138,7 +138,7 @@
             <li class="nav-item mb-1">
                 <a class="nav-link text-white d-flex  align-items-center" href="#">
 
-                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 35px; height: 35px;">
+                    <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 20px;">
                         <i class="fas fa-cog me-2"></i>
                       </div>
 
@@ -171,12 +171,12 @@
                 <button class="btn btn-light me-2 d-block d-md-none" @click="sidebarOpen = !sidebarOpen">
                   <i class="fas fa-bars"></i>
                 </button>
-                <div class="d-flex text-center" style="font-weight: bold;">
+                <div class="d-flex text-center" style="font-weight: bold;  font-size: 13px;">
                     Pages / {{ last(request()->segments()) }}
                   </div>
                 <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn bg text btn-outline-success" type="submit">Search</button>
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="font-size: 13px">
+                  <button class="btn bg text btn-outline-success" type="submit" style="font-size: 13px">Search</button>
                 </form>
 
               </div>

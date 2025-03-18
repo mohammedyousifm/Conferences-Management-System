@@ -17,10 +17,10 @@ use App\Models\User;
 class ReportsController extends Controller
 {
 
-    public function reports($paperId)
+    public function create($PaperId)
     {
-        $paper = Paper::findOrFail($paperId);
-        $paper_reviewer = Reviewer::where('paper_id', $paperId)->first();
+        $paper = Paper::findOrFail($PaperId);
+        $paper_reviewer = Reviewer::where('paper_id', $PaperId)->first();
         return view('2-dashboard.controller.reports', compact('paper', 'paper_reviewer'));
     }
 
@@ -31,7 +31,7 @@ class ReportsController extends Controller
      * @param Request $request The incoming HTTP request.
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($paper_id, Request $request)
+    public function store($PaperId, Request $request)
     {
         try {
             // ✅ Validate Input
@@ -44,7 +44,7 @@ class ReportsController extends Controller
             DB::beginTransaction();
 
             $store = new Paper_controller();
-            $store->paper_id = $paper_id;
+            $store->paper_id = $PaperId;
             $store->controller_id = auth()->id();
             $store->report_comment = $validated['report'];
 
@@ -71,10 +71,10 @@ class ReportsController extends Controller
             $store->save();
 
             // ✅ Retrieve Author Details Securely
-            $Author = User::where('id', Paper::where('id', $paper_id)->value('user_id'))->firstOrFail();
+            $Author = User::where('id', Paper::where('id', $PaperId)->value('user_id'))->firstOrFail();
 
             // ✅ Send Email Notification
-            Mail::to($Author->email)->send(new ControllerReport($Author->name, $validated['report'], $paper_id));
+            Mail::to($Author->email)->send(new ControllerReport($Author->name, $validated['report'], $PaperId));
 
             // ✅ Commit Transaction
             DB::commit();

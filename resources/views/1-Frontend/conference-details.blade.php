@@ -17,7 +17,7 @@
                             <h3 class="mb10">{{ $Conference->title }} <span>(ICAAE - 2025) </span></h3>
                             <hr>
                             <h4 class="mb-3">{{ $Conference->registration_deadline }} <span>Hybrid Mode</span></h4>
-                            <a href="{{ route('conference.indexApply', $Conference->title) }}"
+                            <a href="{{ route('conference.create', $Conference->id) }}"
                                 class="m-0 button button-small button-border button-rounded">Online
                                 Registration</a>
                         </div>

@@ -107,7 +107,7 @@
                                                                     </a>
 
                                                                     <br class="divider">
-                                                                    <a class="btn bg text mt-3" href="{{ route('report', $paper->id) }}">Generate
+                                                                    <a class="btn bg text mt-3" href="{{ route('controller.report', $paper->id) }}">Generate
                                                                         report</a>
                                                                 @endif
                                                             </li>

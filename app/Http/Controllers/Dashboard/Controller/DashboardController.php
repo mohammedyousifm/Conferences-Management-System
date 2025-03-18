@@ -16,6 +16,8 @@ use App\Models\Paper_controller;
 use App\Models\Activity;
 use App\Events\ReviewerAlocet;
 use App\Events\StatusUpdated;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AllocateReviewer;
 
 class DashboardController extends Controller
 {
@@ -55,7 +57,7 @@ class DashboardController extends Controller
         // ✅ Retrieve papers where the conference is managed by the logged-in controller
         $papers = Paper::whereHas('conference', function ($query) use ($controllerId) {
             $query->where('controller_id', $controllerId);
-        })->latest()->paginate(10);
+        })->latest()->paginate(1);
 
         $all_papers_count = Paper::count();
         $Approved_papers_count = Paper::where('status',  'Approved')->count();
@@ -84,7 +86,6 @@ class DashboardController extends Controller
                 'reviewers_id.*' => 'exists:users,id',
             ]);
 
-            // Start a transaction to ensure database consistency
             DB::beginTransaction();
 
             // Attach multiple reviewers to the paper
@@ -96,28 +97,28 @@ class DashboardController extends Controller
             }
 
             // Retrieve the logged-in user (controller assigning reviewers)
-            $controllerName = Auth::user()->name;
+            $ControllerName = Auth::user()->name;
 
             // Fetch assigned reviewer names
             $reviewerNames = User::whereIn('id', $validated['reviewers_id'])->pluck('name')->toArray();
             $reviewerNamesStr = implode(', ', $reviewerNames);
 
             // Retrieve the paper code
-            $paperCode = $paper->paper_code;
+            $PaperCode = $paper->paper_code;
 
-            // Commit transaction after successful database update
             DB::commit();
 
             // Fire event to notify about reviewer assignment
-            event(new ReviewerAlocet($controllerName, $reviewerNamesStr, $paperCode));
+            event(new ReviewerAlocet($ControllerName, $reviewerNamesStr, $PaperCode));
+            // Fetch reviewer /
+
+            $ReviewerEmails = User::whereIn('id', $validated['reviewers_id'])->pluck('email')->toArray();
+
+            // Send email to reviewers
+            Mail::to($ReviewerEmails)->send(new AllocateReviewer($ControllerName, $reviewerNamesStr, $PaperCode));
 
             // Flash success message
-            flash()
-                ->options([
-                    'timeout'  => 5000,
-                    'position' => 'top-center',
-                ])
-                ->success('Users assigned successfully!');
+            session()->flash('success', 'Users assigned successfully!');
         } catch (ValidationException $e) {
             // Rollback transaction in case of validation failure
             DB::rollBack();
@@ -138,16 +139,12 @@ class DashboardController extends Controller
             ]);
 
             // Flash error message
-            flash()
-                ->options([
-                    'timeout'  => 5000,
-                    'position' => 'top-center',
-                ])
-                ->error('Failed to assign users');
+            session()->flash('error', 'Failed to assign users');
         }
 
         return back();
     }
+
 
     /**
      * Review The status of a paper.
@@ -208,57 +205,6 @@ class DashboardController extends Controller
                 ])
                 ->error('Failed to updated Status' . $e->getMessage());
         }
-        return back();
-    }
-
-    public function report_commint(Request $request, $paper_id)
-    {
-        try {
-            // ✅ Validate Input
-            $request->validate([
-                'report_comment' => 'nullable|string|max:500',
-                'report_file' => 'nullable|file|max:2048',
-            ]);
-
-            // ✅ Handle File Upload
-            $filePath = null;
-            if ($request->hasFile('report_file')) {
-
-                $latestReport = Paper_controller::where('paper_id', $paper_id)->latest()->first();
-                $nextNumber = $latestReport ? intval(preg_replace('/[^0-9]/', '', $latestReport->report_file)) + 1 : 1;
-
-
-                $fileName = "report_{$nextNumber}." . $request->file('report_file')->getClientOriginalExtension();
-
-
-                $filePath = $request->file('report_file')->storeAs('controller_reports', $fileName, 'public');
-            }
-
-            // ✅ Create Report Record
-            Paper_controller::create([
-                'controller_id' => auth()->id(),
-                'paper_id' => $paper_id,
-                'report_comment' => $request->report_comment,
-                'report_file' => $filePath,
-            ]);
-
-            // ✅ Flash Message
-            flash()
-                ->options([
-                    'timeout' => 5000,
-                    'position' => 'top-center',
-                ])
-                ->success('Paper review submitted successfully!');
-        } catch (\Exception $e) {
-            Log::error('Failed to submit review: ' . $e->getMessage());
-            flash()
-                ->options([
-                    'timeout' => 5000,
-                    'position' => 'top-center',
-                ])
-                ->error('Failed to submit review: ' . $e->getMessage());
-        }
-
         return back();
     }
 }

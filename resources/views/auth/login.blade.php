@@ -53,8 +53,6 @@
         </div>
     </section>
 
-
-
 @endsection
 
 <style>

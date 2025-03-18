@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Paper;
+use App\Models\Conference;
 use App\Models\User;
 use App\Models\Reviewer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Events\ReviewerComment;
 use App\Models\Activity;
-
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ReviewerComment as ReviewerComments;
 
 
 class DashboardController extends Controller
@@ -49,11 +51,10 @@ class DashboardController extends Controller
         try {
             // ✅ Validate Input
             $validatedData = $request->validate([
-                'comment' => 'nullable|string|max:500',
+                'comment'    => 'nullable|string',
                 'paper_file' => 'file|max:2048',
             ]);
 
-            // ✅ Begin Database Transaction
             DB::transaction(function () use ($validatedData, $request, $paper_id) {
                 // ✅ Retrieve Paper Reviewer Record
                 $paperReviewer = Reviewer::where('paper_id', $paper_id)->firstOrFail();
@@ -65,11 +66,8 @@ class DashboardController extends Controller
                     $file = $request->file('paper_file');
                     $paperCode = optional($paperReviewer->paper)->paper_code ? ltrim($paperReviewer->paper->paper_code, '#') : '00001';
 
-                    // Construct file name and path
+                    // Construct file name and move file
                     $filename = "reviewer_comment_{$paperCode}." . $file->getClientOriginalExtension();
-                    $filePath = public_path('paperFile/' . $filename);
-
-                    // Move file
                     $file->move(public_path('paperFile'), $filename);
 
                     // Store file path
@@ -79,25 +77,30 @@ class DashboardController extends Controller
                 // ✅ Save Reviewer Comment
                 $paperReviewer->save();
 
-                // ✅ Retrieve Paper Record
+                // ✅ Retrieve Paper and Controller Details
                 $paper = Paper::findOrFail($paper_id);
+                $ReviewerName = Auth::user()->name;
+                $Controller = User::where('id', $paper->conference->controller_id)->first(['name', 'email']);
+
+                // ✅ Send Email Notification to Controller
+                Mail::to($Controller->email)->send(new ReviewerComments($Controller->name, $ReviewerName, $paper->paper_code));
 
                 // ✅ Insert Recent Activity
                 Activity::create([
-                    'paper_code' => $paper->paper_code,
-                    'user_id' => Auth::id(),
+                    'paper_code'    => $paper->paper_code,
+                    'user_id'       => Auth::id(),
                     'activity_type' => 'Comments',
-                    'description' => 'Commented on Paper ' . $paper->paper_code,
+                    'description'   => "Commented on Paper {$paper->paper_code}",
                 ]);
 
-                // ✅ Fire Event to Notify Reviewer
-                event(new ReviewerComment(Auth::user()->name, $paper->paper_code));
+                // ✅ Fire Event for Reviewer Comment Notification
+                event(new ReviewerComment($ReviewerName, $paper->paper_code));
             });
 
             // ✅ Success Notification
             flash()
                 ->options([
-                    'timeout' => 5000,
+                    'timeout'  => 5000,
                     'position' => 'top-center',
                 ])
                 ->success('Paper review submitted successfully!');
@@ -107,10 +110,10 @@ class DashboardController extends Controller
             // ✅ Error Notification
             flash()
                 ->options([
-                    'timeout' => 5000,
+                    'timeout'  => 5000,
                     'position' => 'top-center',
                 ])
-                ->error('Failed to submit review' . $e->getMessage());
+                ->error('Failed to submit review: ' . $e->getMessage());
         }
 
         return back();
