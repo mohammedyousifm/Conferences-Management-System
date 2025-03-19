@@ -88,7 +88,7 @@
             </li>
 
             <li class="nav-item mb-1">
-                <a class="nav-link {{ request()->routeIs('controller.papers' , 'papers.controller' , 'track_status.author' , 'controller.review_papers')  ? 'active' : '' }}  text-white d-flex align-items-center"
+                <a class="nav-link {{ request()->routeIs('controller.papers' , 'papers.controller' , 'track_status.author' , 'controller.report', 'controller.review_papers')  ? 'active' : '' }}  text-white d-flex align-items-center"
                  href="{{ getUserRoute('paper') }}">
 
                  <div class="icon-box d-flex justify-content-center align-items-center me-3" style="width: 30px; height: 20px;">
@@ -102,7 +102,7 @@
             @if (Auth::user()->user_role == 'controller')
 
              <li class="nav-item mb-1">
-                 <a class="nav-link {{ request()->routeIs('controller.conferences', 'controller.ConferenceCreate')  ? 'active' : '' }} text-white d-flex align-items-center"
+                 <a class="nav-link {{ request()->routeIs('controller.conferences','controller.view_conference' ,'controller.ConferenceCreate')  ? 'active' : '' }} text-white d-flex align-items-center"
                      href="{{ route('controller.conferences') }}">
 
                      <div class="icon-box d-flex justify-content-center align-items-center me-3"style="width: 30px; height: 15px;">

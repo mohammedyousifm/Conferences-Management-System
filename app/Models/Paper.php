@@ -17,6 +17,7 @@ class Paper extends Model
         'paper_title',
         'abstract',
         'paper_file',
+        'paperFileV2',
         'version',
         'keywords',
         'paper_code',

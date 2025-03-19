@@ -11,22 +11,34 @@ use Illuminate\Support\Facades\DB;
 
 class ConferenceController extends Controller
 {
+    /**
+     * Summary of conferences
+     * @return \Illuminate\Contracts\View\View
+     */
     public function conferences()
     {
         // ✅ Get the logged-in controller ID
         $controllerId = Auth::id();
 
         $Conferences = Conference::where('controller_id', $controllerId)->latest()->paginate(10);
-        return view('2-dashboard.controller.conference', compact('Conferences'));
+        return view('2-dashboard.controller.conferences.conference', compact('Conferences'));
     }
 
+    /**
+     * Summary of create
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create()
     {
 
-        return view('2-dashboard.controller.add-conferences');
+        return view('2-dashboard.controller.conferences.create');
     }
 
-
+    /**
+     * Summary of store
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
 
@@ -76,5 +88,29 @@ class ConferenceController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Summary of view
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function view()
+    {
+        return view('2-dashboard.controller.conferences.view');
+    }
+
+    /**
+     * Summary of destroy
+     * @param \App\Models\Conference $conference
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Conference $conference)
+    {
+        try {
+            $conference->delete();
+            return redirect()->route('controller.conferences')->with('success', 'Conference deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('controller.conferences')->with('error', 'Failed to delete conference.');
+        }
     }
 }

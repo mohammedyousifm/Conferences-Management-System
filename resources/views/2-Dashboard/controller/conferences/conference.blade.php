@@ -96,12 +96,27 @@
 
                                                 <!-- Action Buttons -->
                                                 <td>
-                                                    <a href="" class="btn bg text p-1 btn-sm" style="font-size: 11px">
+                                                    <a href="{{ route('controller.view_conference', $Conference->id) }}"
+                                                        class="btn bg text p-1 btn-sm" style="font-size: 11px">
                                                         <i class="fa-solid fa-eye"></i> View
                                                     </a>
-                                                    <a href="" class="btn btn-success text p-1 btn-sm" style="font-size: 11px">
-                                                        <i class="fa-solid fa-trash"></i> Delete
-                                                    </a>
+                                                    <form id="delete-form-{{ $Conference->id }}" class="p-1"
+                                                        action="{{ route('controller.destroy_conference', $Conference->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn  text p-1 btn-s btn-danger" style="font-size: 10px"
+                                                            onclick="confirmDelete({{ $Conference->id }})"><i class="fa-solid fa-trash"></i>
+                                                            Delete</button>
+                                                    </form>
+
+                                                    <script>
+                                                        function confirmDelete(conferenceId) {
+                                                            if (confirm("Are you sure you want to delete this conference? This action cannot be undone!")) {
+                                                                document.getElementById('delete-form-' + conferenceId).submit();
+                                                            }
+                                                        }
+                                                    </script>
+
                                                 </td>
                                             </tr>
                                 @endforeach
@@ -119,5 +134,6 @@
     </section>
 
     </div>
+
 
 @endsection

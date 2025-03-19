@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ControllerReport;
 use App\Models\Paper;
+use App\Models\Conference;
 use App\Models\Reviewer;
 use App\Models\Paper_controller;
 use App\Models\User;
@@ -21,7 +22,7 @@ class ReportsController extends Controller
     {
         $paper = Paper::findOrFail($PaperId);
         $paper_reviewer = Reviewer::where('paper_id', $PaperId)->first();
-        return view('2-dashboard.controller.reports', compact('paper', 'paper_reviewer'));
+        return view('2-dashboard.controller.reports.reports', compact('paper', 'paper_reviewer'));
     }
 
     /**

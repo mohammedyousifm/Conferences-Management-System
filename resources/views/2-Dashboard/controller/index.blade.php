@@ -28,7 +28,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-muted text-black mb-1" style="font-size: 13px">In process</h6>
-                                <h4 class="fw-bold text-dark" style="font-size: 13px">{{ $In_Process_papers_count }} </h4>
+                                <h4 class="fw-bold text-dark" style="font-size: 13px">{{ $in_process_papers_count }} </h4>
                             </div>
                             <div class="icon-box d-flex justify-content-center bg align-items-center"
                                 style="width: 50px; height: 50px; border-radius: 12px;">
@@ -43,7 +43,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <div>
                                 <h6 class="text-muted text-black mb-1" style="font-size: 13px">Approved</h6>
-                                <h4 class="fw-bold text-dark" style="font-size: 13px">{{ $Approved_papers_count }}</h4>
+                                <h4 class="fw-bold text-dark" style="font-size: 13px">{{ $approved_papers_count }}</h4>
                             </div>
                             <div class="icon-box d-flex justify-content-center bg align-items-center"
                                 style="width: 50px; height: 50px; border-radius: 12px;">
@@ -76,7 +76,7 @@
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header bg text-white" style="font-size: 13px">
-                                <i class="bi bi-file-earmark-check me-2"></i>Paper Status
+                                <i class="bi bi-file-earmark-check me-2"></i>Last Allocated Paper
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered mb-0">
@@ -84,22 +84,23 @@
 
                                         <tr>
                                             <th scope="row">Paper ID</th>
-                                            <td>{{ $Paper_Comment_Done->paper->paper_code ?? 'N/A'}}</td>
+                                            <td>{{ $LastAllocatedPaper->paper->paper_code ?? 'N/A'}}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Allocated To</th>
-                                            <td>{{ $Paper_Comment_Done->reviewer->name ?? 'N/A' }}</td>
+                                            <td>{{ $LastAllocatedPaper->reviewer->name ?? 'N/A' }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Status</th>
                                             <td>
-                                                <span class="status-done">{{ $Paper_Comment_Done->status ?? 'N/A' }}</span>
+                                                <span
+                                                    class="status-done fs-12">{{ $LastAllocatedPaper->status ?? 'N/A' }}</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Action</th>
                                             <td>
-                                                <a href="" class="btn bg btn-primary btn-sm">
+                                                <a href="" class="btn bg btn-primary fs-12 btn-sm">
                                                     <i class="bi bi-eye"></i> View Details
                                                 </a>
                                             </td>
@@ -122,21 +123,21 @@
                                     <tbody style="font-size: 13px">
                                         <tr>
                                             <th scope="row" style="width: 40%;">Paper Code</th>
-                                            <td>{{ $New_Paper->paper_code ?? 'N/A' }}</td>
+                                            <td>{{ $newPaper->paper_code ?? 'N/A' }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Submitted By</th>
-                                            <td>{{ $New_Paper->author_name ?? 'N/A' }}</td>
+                                            <td>{{ $newPaper->author_name ?? 'N/A' }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Received On</th>
-                                            <td>{{ $New_Paper->created_at ?? 'N/A' }}</td>
+                                            <td>{{ $newPaper->created_at ?? 'N/A' }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Action</th>
                                             <td>
                                                 <a href="{{ route('controller.review_papers', $New_Paper->id ?? 'N/A') }}"
-                                                    class="btn bg btn-primary btn-sm">
+                                                    class="btn bg btn-primary btn-sm fs-12">
                                                     <i class="bi bi-eye"></i> View Details
                                                 </a>
                                             </td>
@@ -156,7 +157,7 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        @foreach ($Recent_Activity as $Activity)
+                        @foreach ($recentActivity as $Activity)
                             <li class="list-group-item" style="font-size: 13px">
                                 <i class="bi bi-file-earmark-check text-success me-2"></i>
                                 <strong>{{ $Activity->Activity_User->name ?? 'N/A'  }}</strong> {{ $Activity->description }}
@@ -235,10 +236,10 @@
             // Display Toastr notification
             toastr.info(
                 `<div style="display: flex; align-items: center; gap: 12px;">
-                                                                                                                                                        <div>
-                                                                                                                                                            <small style="color: #eee;">Paper Code: <strong>${paper_code}</strong></small>
-                                                                                                                                                        </div>
-                                                                                                                                                    </div>`,
+                                                                                                                                                                                                <div>
+                                                                                                                                                                                                    <small style="color: #eee;">Paper Code: <strong>${paper_code}</strong></small>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                            </div>`,
                 "📢New Paper", // Title
                 { escapeHtml: false }
             );

@@ -67,13 +67,13 @@
         </div>
         <div class="content">
             <p>Dear {{ $Author->name }},</p>
-            <p>Thank you for registering with the Conference Management System. Your account has been successfully
-                created.</p>
+            <p> 💖🙌Thirlled You`ve joined us! Access your conference home page to enroll to your prefered conference
+            </p>
             <p><strong>Email:</strong> {{  $Author->email }}</p>
             <p><strong>Registration Date:</strong> {{ date('Y-m-d') }}</p>
-            <p>You can now log in and start submitting your research papers.</p>
+            <p>Log in ! enroll and submit your papaers.</p>
             <p>
-                <a href="{{ route('login') }}" class="btn">Login Now</a>
+                <a href="{{ route('login') }}" class="btn">Enroll Now</a>
             </p>
         </div>
         <div class="footer">

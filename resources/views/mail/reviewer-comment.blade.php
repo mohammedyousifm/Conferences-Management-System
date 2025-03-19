@@ -68,15 +68,15 @@
 
         <div class="content">
             <p>Dear {{ $ControllerName }},</p>
-            <p>The reviewer **{{ $ReviewerName }}** has added a new comment on the paper submitted.</p>
+            <p>The reviewer **{{ $ReviewerName }}** has reviewed the alocated paper.</p>
 
             <p><strong>Paper Code:</strong> {{ $PaperCode }}</p>
             <p><strong>Reviewer:</strong> {{ $ReviewerName }}</p>
 
-            <p>Please check the comment and take any necessary actions.</p>
+            <p>Please check it out and take the necessary action.</p>
 
             <p>
-                <a href="{{ route('login') }}" class="btn">View Comment</a>
+                <a href="{{ route('login') }}" class="btn">View </a>
             </p>
         </div>
 

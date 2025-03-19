@@ -67,12 +67,11 @@
         </div>
         <div class="content">
             <p>Dear {{ $Author }},</p>
-            <p>We would like to inform you about an important update regarding your research paper submission.</p>
-            <p><strong>Report Comment:</strong> {{ $ReportComment }}</p>
-            <p>Please review the comments and take the necessary action.</p>
+            <p> This message regarding your paper submitted in #3333339 </p>
+            <p>Please log in to your System to check your paper`s status and updates </p>
             <p>
                 <a href="{{ route('conference.paper_view', ['encrypted_id' => encrypt($PaperID)]) }}" class="btn">View
-                    Details</a>
+                </a>
             </p>
         </div>
         <div class="footer">

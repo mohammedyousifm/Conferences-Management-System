@@ -65,19 +65,28 @@
         <div class="header">
             <p>Conference Management System</p>
         </div>
+
         <div class="content">
-            <p>Dear {{ $Controller->name }},</p>
-            <p>🔔New paper has been submitted by: (mnbf).</p>
-            <p><strong>Paper Code:</strong> {{ $PaperID }}</p>
-            <p>Please check it out and take the necessary action.</p>
-            <p>
-                <a href="{{ route('controller.review_papers', 2) }}" class="btn">view</a>
-            </p>
+            <p>Dear {{ $authorName }},</p>
+
+            <p>We are pleased to inform you that your paper has been reviewed, and it has been moved forward in the
+                approval process. 🎉</p>
+
+            <p><strong>Paper Code:</strong> {{ $paperCode }}</p>
+            <p><strong>conference Name:</strong> {{ $conferenceName }}</p>
+
+            <p>At this stage, no further action is required from you. However, if any additional updates or
+                clarifications are needed, we will contact you.</p>
+
+            <p>Thank you for your contribution!</p>
         </div>
+
         <div class="footer">
             &copy; {{ date('Y') }} Conference Management System. All Rights Reserved.
         </div>
+
     </div>
+
 </body>
 
 </html>

@@ -79,7 +79,7 @@
                             </select>
 
                             <!-- Hidden submit button -->
-                            <button type="submit" id="submit-btn-{{ $paper->id }}" class="btn btn-success btn-sm mt-2" style="display: none;">Submit</button>
+                            <button type="submit" id="submit-btn-{{ $paper->id }}" class="btn btn-success fs-12 btn-sm mt-2" style="display: none;">Submit</button>
                              </form>
                          </td>
 

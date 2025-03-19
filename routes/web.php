@@ -71,6 +71,7 @@ Route::prefix('controller')->middleware(['auth', 'role:controller'])->group(func
 
     // ✅ Controller Dashboard
     Route::get('/', [ControllerCont::class, 'index'])->name('controller.dashboard');
+    Route::get('/test', [ControllerCont::class, 'test'])->name('controller.test');
 
     // ✅ Papers
     Route::get('/papers', [ControllerCont::class, 'papers_index'])->name('controller.papers');
@@ -82,6 +83,8 @@ Route::prefix('controller')->middleware(['auth', 'role:controller'])->group(func
     Route::get('/conferences', [ConferenceCont::class, 'conferences'])->name('controller.conferences');
     Route::get('/conference/create', [ConferenceCont::class, 'create'])->name('controller.create_conference');
     Route::post('/conference/store', [ConferenceCont::class, 'store'])->name('controller.store_conference');
+    Route::get('/conference/view/{id}', [ConferenceCont::class, 'view'])->name('controller.view_conference');
+    Route::delete('/conference/{conference}', [ConferenceCont::class, 'destroy'])->name('controller.destroy_conference');
 
     // ✅ Reports
     Route::get('/report/{PaperId}', [ReportsController::class, 'create'])->name('controller.report');

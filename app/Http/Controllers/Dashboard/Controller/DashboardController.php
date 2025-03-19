@@ -18,28 +18,47 @@ use App\Events\ReviewerAlocet;
 use App\Events\StatusUpdated;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AllocateReviewer;
+use App\Mail\PaperApprovedMail;
 
 class DashboardController extends Controller
 {
+
+    /**
+     * Display the dashboard statistics.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function index()
     {
+        // Use aggregate functions in a single query
+        $paperCounts = Paper::selectRaw("
+            COUNT(*) as all_papers_count,
+            SUM(CASE WHEN status = 'Rejected' THEN 1 ELSE 0 END) as rejected_papers_count,
+            SUM(CASE WHEN status = 'Approved' THEN 1 ELSE 0 END) as approved_papers_count,
+            SUM(CASE WHEN status = 'In Process' THEN 1 ELSE 0 END) as in_process_papers_count
+        ")->first();
 
+        // Fetch latest paper
+        $newPaper = Paper::latest()->first();
 
-        $papers = Paper::all();
-        $all_papers_count = Paper::count();
-        $Rejected_papers_count = Paper::where('status',  'Rejected')->count();
-        $Approved_papers_count = Paper::where('status',  'Approved')->count();
-        $In_Process_papers_count = Paper::where('status',  'In Process')->count();
+        $LastAllocatedPaper =  Reviewer::latest()->firstOrFail();
 
-        $New_Paper = Paper::latest()->first();
+        // Fetch recent activity (limit 3)
+        $recentActivity = Activity::latest()->take(3)->get();
 
-        $Recent_Activity = Activity::latest()->take(3)->get();
+        // Fetch the latest reviewer comment update
+        $latestReviewer = Reviewer::latest('updated_at')->first();
 
-        $Paper_Comment_Done = Reviewer::orderBy('updated_at', 'desc')->first();
-
-
-
-        return view('2-dashboard.controller.index', compact('all_papers_count', 'papers', 'Rejected_papers_count', 'Approved_papers_count', 'New_Paper', 'Recent_Activity', 'In_Process_papers_count', 'Paper_Comment_Done'));
+        return view('2-dashboard.controller.index', [
+            'all_papers_count' => $paperCounts->all_papers_count,
+            'rejected_papers_count' => $paperCounts->rejected_papers_count,
+            'approved_papers_count' => $paperCounts->approved_papers_count,
+            'in_process_papers_count' => $paperCounts->in_process_papers_count,
+            'newPaper' => $newPaper,
+            'recentActivity' => $recentActivity,
+            'latestReviewer' => $latestReviewer,
+            'LastAllocatedPaper' => $LastAllocatedPaper
+        ]);
     }
 
     /**
@@ -67,7 +86,7 @@ class DashboardController extends Controller
         // ✅ Retrieve the users where the user_roles is reviewer
         $users = User::where('user_role', 'reviewer')->get();
 
-        return view('2-dashboard.controller.papers', compact('papers', 'users', 'Approved_papers_count', 'Rejected_papers_count', 'In_Process_papers_count', 'all_papers_count'));
+        return view('2-dashboard.controller.papers.papers', compact('papers', 'users', 'Approved_papers_count', 'Rejected_papers_count', 'In_Process_papers_count', 'all_papers_count'));
     }
 
     /**
@@ -160,7 +179,7 @@ class DashboardController extends Controller
         $paper = Paper::findOrFail($id);
         $users = User::where('user_role', 'reviewer')->get();
 
-        return view('2-dashboard.controller.review-status', compact('paper', 'users'));
+        return view('2-dashboard.controller.papers.review-status', compact('paper', 'users'));
     }
 
 
@@ -177,7 +196,7 @@ class DashboardController extends Controller
 
             // ✅ Validate Input
             $request->validate([
-                'status' => 'required|in:Submitted,Accepted,Under_review,Rejected',
+                'status' => 'required|in:In process,Approved,Rejected',
             ]);
 
             // ✅ Store Data in Database
@@ -185,6 +204,15 @@ class DashboardController extends Controller
             $StatusUpdate->status = $request->status;
             $StatusUpdate->save();
 
+            $authorName = $StatusUpdate->author_name;
+            $paperCode = $StatusUpdate->paper_code;
+            $conferenceName = $StatusUpdate->conference?->title;
+            $authorEmail = $StatusUpdate->author?->email;
+
+            // ✅ Ensure author email exists before sending mail
+            if ($request->status === 'Approved' && !empty($authorEmail)) {
+                Mail::to($authorEmail)->send(new PaperApprovedMail($paperCode, $authorName, $conferenceName));
+            }
 
             // ✅ Redirect Back with Success Message
             flash()
